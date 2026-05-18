@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🗺️ 上海浙江旅遊計劃板 2026</title>
+<style>
+:root {
+  --orange:#FF6B35; --blue:#0077FF; --green:#1A936F;
+  --purple:#7B2D8B; --navy:#1b2838; --teal:#00b4d8;
+  --bg:#f4f5f7; --sidebar-bg:#1e2230; --card:#fff;
+  --border:#e8eaed; --text:#1a1a1a; --muted:#888;
+  --radius:10px; --shadow:0 2px 12px rgba(0,0,0,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang TC','Microsoft JhengHei',sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+
+/* HEADER */
+#header{background:var(--navy);color:#fff;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:100}
+#header h1{font-size:15px;font-weight:800;letter-spacing:.5px}
+#header .meta{font-size:11px;color:#8899aa;margin-top:1px}
+.header-actions{display:flex;gap:8px}
+.hbtn{background:rgba(255,255,255,.1);border:none;color:#fff;padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer;transition:.2s}
+.hbtn:hover{background:rgba(255,255,255,.2)}
+.hbtn.accent{background:var(--orange)}
+
+/* LAYOUT */
+#main{display:flex;flex:1;overflow:hidden}
+
+/* LEFT SIDEBAR */
+#sidebar{width:280px;flex-shrink:0;background:var(--sidebar-bg);overflow-y:auto;display:flex;flex-direction:column}
+#sidebar::-webkit-scrollbar{width:4px}
+#sidebar::-webkit-scrollbar-thumb{background:#3a4050;border-radius:4px}
+.sidebar-top{padding:14px 14px 8px;border-bottom:1px solid rgba(255,255,255,.07)}
+.sidebar-top h2{font-size:11px;font-weight:700;color:#8899aa;letter-spacing:2px;text-transform:uppercase}
+.progress-row{display:flex;align-items:center;gap:8px;margin-top:8px}
+.progress-bar{flex:1;height:4px;background:#2a3050;border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--orange);border-radius:2px;transition:.4s}
+.progress-text{font-size:10px;color:var(--orange);white-space:nowrap}
+
+/* DAY ITEMS */
+.day-group{border-bottom:1px solid rgba(255,255,255,.05)}
+.day-header{display:flex;align-items:center;padding:10px 14px;cursor:pointer;gap:8px;user-select:none;transition:.15s}
+.day-header:hover{background:rgba(255,255,255,.04)}
+.day-header.active{background:rgba(255,107,53,.1)}
+.day-icon{font-size:16px;flex-shrink:0;width:22px;text-align:center}
+.day-info{flex:1;min-width:0}
+.day-date{font-size:11px;font-weight:700;color:#aab;white-space:nowrap}
+.day-label{font-size:12px;color:#ccd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.day-meta{display:flex;align-items:center;gap:4px;margin-top:1px}
+.day-badge{font-size:9px;padding:1px 6px;border-radius:8px;font-weight:700}
+.badge-free{background:rgba(0,119,255,.25);color:#6bb3ff}
+.badge-tour{background:rgba(26,147,111,.25);color:#6bd4a8}
+.badge-hot{background:rgba(255,107,53,.3);color:#ff9a70}
+.day-chevron{font-size:10px;color:#556;transition:.2s}
+.day-header.open .day-chevron{transform:rotate(90deg)}
+
+.activity-list{display:none;padding:4px 0 6px}
+.day-header.open + .activity-list{display:block}
+.activity-item{display:flex;align-items:center;padding:6px 14px 6px 20px;gap:8px;cursor:pointer;transition:.15s}
+.activity-item:hover{background:rgba(255,255,255,.04)}
+.activity-item.selected{background:rgba(255,107,53,.15);border-right:3px solid var(--orange)}
+.act-check{width:14px;height:14px;border:1.5px solid #3a4555;border-radius:3px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:9px;transition:.15s}
+.act-check.checked{background:var(--green);border-color:var(--green);color:#fff}
+.act-icon{font-size:13px;flex-shrink:0;width:18px;text-align:center}
+.act-body{flex:1;min-width:0}
+.act-time{font-size:9px;color:#556;font-weight:700}
+.act-title{font-size:11px;color:#ccd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.act-title.done{text-decoration:line-through;color:#556}
+.act-cost{font-size:9px;color:#8899aa;white-space:nowrap}
+
+.add-act-btn{margin:4px 14px;padding:5px;border:1px dashed #3a4555;border-radius:6px;background:none;color:#556;font-size:10px;cursor:pointer;width:calc(100% - 28px);transition:.15s}
+.add-act-btn:hover{border-color:#FF6B35;color:#FF6B35}
+
+.sidebar-footer{padding:12px 14px;border-top:1px solid rgba(255,255,255,.07)}
+.add-day-btn{width:100%;padding:8px;background:rgba(255,107,53,.15);border:1px dashed rgba(255,107,53,.4);border-radius:8px;color:#ff9a70;font-size:11px;cursor:pointer;transition:.15s}
+.add-day-btn:hover{background:rgba(255,107,53,.25)}
+
+/* RIGHT CONTENT */
+#content{flex:1;overflow:hidden;display:flex;flex-direction:column}
+
+/* TABS */
+#tabs{display:flex;background:#fff;border-bottom:2px solid var(--border);padding:0 20px;flex-shrink:0}
+.tab{padding:12px 16px;border:none;background:none;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.15s;white-space:nowrap}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--orange);border-bottom-color:var(--orange)}
+
+/* TAB CONTENT */
+.tab-pane{display:none;flex:1;overflow-y:auto;padding:20px}
+.tab-pane.active{display:block}
+.tab-pane::-webkit-scrollbar{width:5px}
+.tab-pane::-webkit-scrollbar-thumb{background:#ddd;border-radius:4px}
+
+/* DETAIL PANEL */
+#detail-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:200px;color:#ccc;gap:8px}
+#detail-placeholder .icon{font-size:40px}
+#detail-placeholder p{font-size:13px}
+
+.detail-card{background:#fff;border-radius:var(--radius);border:1px solid var(--border);overflow:hidden}
+.detail-header{padding:16px 20px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.detail-icon-title{display:flex;align-items:center;gap:10px}
+.detail-icon{font-size:24px}
+.detail-title{font-size:18px;font-weight:800}
+.detail-subtitle{font-size:11px;color:var(--muted);margin-top:1px}
+.detail-actions{display:flex;gap:6px;flex-shrink:0}
+.icon-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.15s}
+.icon-btn:hover{background:var(--bg)}
+
+.detail-addr{padding:10px 20px;background:#f8f9fa;display:flex;align-items:center;gap:8px;font-size:12px;color:#555;border-top:1px solid var(--border)}
+.detail-addr .addr-icon{font-size:14px}
+
+.link-row{display:flex;gap:8px;padding:14px 20px;flex-wrap:wrap}
+.link-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;text-decoration:none;border:none;transition:.15s}
+.link-btn:hover{opacity:.85;transform:translateY(-1px)}
+.btn-maps{background:#4285f4;color:#fff}
+.btn-amap{background:#1d6fa4;color:#fff}
+.btn-red{background:#ff2442;color:#fff}
+.btn-book{background:var(--orange);color:#fff}
+.btn-xhs{background:#ff2442;color:#fff}
+
+.detail-sections{padding:0 20px 20px}
+.section-block{margin-top:16px}
+.section-title{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.tip-list{list-style:none}
+.tip-list li{font-size:12px;color:#444;padding:4px 0;display:flex;gap:8px;line-height:1.5}
+.tip-list li::before{content:'›';color:var(--orange);font-weight:700;flex-shrink:0}
+.cost-badge{display:inline-flex;align-items:center;gap:5px;background:#f0faf5;border:1px solid #b3e8d0;border-radius:20px;padding:4px 12px;font-size:11px;color:var(--green);font-weight:700}
+.highlight-badge{display:inline-flex;align-items:center;gap:5px;background:#fff5f0;border:1px solid #ffd4b3;border-radius:20px;padding:4px 12px;font-size:11px;color:var(--orange);font-weight:700}
+
+.notes-area{width:100%;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:12px;resize:vertical;min-height:80px;font-family:inherit;color:var(--text);outline:none}
+.notes-area:focus{border-color:var(--orange)}
+
+/* HOTELS */
+.hotels-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.hotel-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:.2s}
+.hotel-card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.hotel-img{height:120px;display:flex;align-items:center;justify-content:center;font-size:36px;position:relative}
+.hotel-confirmed-badge{position:absolute;top:8px;right:8px;background:var(--green);color:#fff;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px}
+.hotel-arranged-badge{position:absolute;top:8px;right:8px;background:#888;color:#fff;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px}
+.hotel-body{padding:12px}
+.hotel-city{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px}
+.hotel-name{font-size:14px;font-weight:800;margin-bottom:2px}
+.hotel-nights{font-size:10px;color:var(--muted)}
+.hotel-price{font-size:12px;color:var(--orange);font-weight:700;margin:6px 0}
+.hotel-actions{display:flex;gap:6px;margin-top:8px}
+.hotel-btn{flex:1;padding:6px;border-radius:6px;font-size:10px;font-weight:700;cursor:pointer;border:none;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:4px;transition:.15s}
+.hotel-btn:hover{opacity:.85}
+.hb-book{background:var(--orange);color:#fff}
+.hb-check{background:#f0f0f0;color:#555}
+.hb-check.confirmed{background:#e6faf2;color:var(--green)}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.section-h{font-size:16px;font-weight:800}
+.section-sub{font-size:11px;color:var(--muted);margin-top:1px}
+
+/* CHECKLIST */
+.checklist-category{background:#fff;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden}
+.cat-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none}
+.cat-title{font-size:13px;font-weight:800;display:flex;align-items:center;gap:8px}
+.cat-count{font-size:10px;color:var(--muted)}
+.cat-body{padding:4px 16px 12px}
+.check-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #f5f5f5}
+.check-row:last-child{border-bottom:none}
+.check-box{width:16px;height:16px;border:2px solid #ddd;border-radius:4px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;transition:.15s}
+.check-box.checked{background:var(--green);border-color:var(--green);color:#fff}
+.check-label{font-size:12px;flex:1}
+.check-label.done{text-decoration:line-through;color:#bbb}
+.check-priority{font-size:9px;padding:1px 6px;border-radius:8px;white-space:nowrap}
+.p1{background:#fff0eb;color:var(--orange)}
+.p2{background:#e8f0ff;color:var(--blue)}
+.p3{background:#f0f0f0;color:#888}
+.add-item-row{display:flex;gap:6px;margin-top:8px;padding-top:8px;border-top:1px dashed #eee}
+.add-item-input{flex:1;border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:11px;outline:none;font-family:inherit}
+.add-item-input:focus{border-color:var(--orange)}
+.add-item-btn{padding:5px 12px;background:var(--orange);color:#fff;border:none;border-radius:6px;font-size:11px;cursor:pointer}
+
+/* BUDGET */
+.budget-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.budget-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center}
+.budget-num{font-size:22px;font-weight:900;color:var(--orange)}
+.budget-label{font-size:10px;color:var(--muted);margin-top:2px}
+.budget-list{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.budget-row{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid #f5f5f5;gap:10px}
+.budget-row:last-child{border-bottom:none}
+.budget-row-icon{font-size:14px;width:20px;text-align:center}
+.budget-row-label{flex:1;font-size:12px}
+.budget-row-amount{font-size:12px;font-weight:700;color:var(--orange)}
+.budget-row-note{font-size:10px;color:var(--muted)}
+
+/* MODAL */
+#modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center}
+#modal-overlay.show{display:flex}
+#modal{background:#fff;border-radius:14px;width:480px;max-width:90vw;max-height:80vh;overflow:hidden;display:flex;flex-direction:column}
+#modal-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+#modal-title{font-size:15px;font-weight:800}
+#modal-close{background:none;border:none;font-size:18px;cursor:pointer;color:#888}
+#modal-body{padding:16px 20px;overflow-y:auto;flex:1}
+#modal-footer{padding:12px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+.modal-btn{padding:8px 18px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:.15s}
+.btn-cancel{background:#f0f0f0;color:#555}
+.btn-save{background:var(--orange);color:#fff}
+.form-group{margin-bottom:14px}
+.form-label{font-size:11px;font-weight:700;color:#555;margin-bottom:5px;display:block}
+.form-input{width:100%;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;font-family:inherit;outline:none}
+.form-input:focus{border-color:var(--orange)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div>
+    <h1>🗺️ 上海浙江旅遊計劃板 2026</h1>
+    <div class="meta">6/28（六）— 7/6（日）· 9天8夜 · 高雄出發</div>
+  </div>
+  <div class="header-actions">
+    <button class="hbtn" onclick="exportData()">⬇ 匯出資料</button>
+    <button class="hbtn" onclick="resetProgress()">↺ 重設進度</button>
+    <button class="hbtn accent" onclick="showModal('add-day')">+ 新增行程日</button>
+  </div>
+</div>
+
+<div id="main">
+  <!-- LEFT SIDEBAR -->
+  <div id="sidebar">
+    <div class="sidebar-top">
+      <h2>行程進度</h2>
+      <div class="progress-row">
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="progress-text" id="progress-text">0%</div>
+      </div>
+    </div>
+    <div id="day-list"></div>
+    <div class="sidebar-footer">
+      <button class="add-day-btn" onclick="showModal('add-day')">＋ 新增行程日</button>
+    </div>
+  </div>
+
+  <!-- RIGHT CONTENT -->
+  <div id="content">
+    <div id="tabs">
+      <button class="tab active" onclick="switchTab('detail',this)">📍 景點詳情</button>
+      <button class="tab" onclick="switchTab('hotels',this)">🏨 住宿清單</button>
+      <button class="tab" onclick="switchTab('checklist',this)">✅ 打包清單</button>
+      <button class="tab" onclick="switchTab('budget',this)">💰 旅費預算</button>
+      <button class="tab" onclick="switchTab('notes',this)">📝 旅遊筆記</button>
+    </div>
+
+    <!-- 景點詳情 -->
+    <div class="tab-pane active" id="pane-detail">
+      <div id="detail-placeholder">
+        <div class="icon">👈</div>
+        <p>點擊左側景點查看詳情、地圖連結與攻略</p>
+      </div>
+      <div id="detail-content" style="display:none"></div>
+    </div>
+
+    <!-- 住宿清單 -->
+    <div class="tab-pane" id="pane-hotels">
+      <div class="section-header">
+        <div>
+          <div class="section-h">🏨 住宿清單</div>
+          <div class="section-sub">點擊「已確認」更新入住狀態 · 6/28-6/29 需自行訂房</div>
+        </div>
+        <button class="hbtn accent" onclick="showModal('add-hotel')" style="font-size:11px">+ 新增住宿</button>
+      </div>
+      <div class="hotels-grid" id="hotels-list"></div>
+    </div>
+
+    <!-- 打包清單 -->
+    <div class="tab-pane" id="pane-checklist">
+      <div class="section-header">
+        <div>
+          <div class="section-h">✅ 出發前清單</div>
+          <div class="section-sub">依優先序排列 · 勾選完成項目</div>
+        </div>
+        <button class="hbtn" onclick="showModal('add-check')" style="font-size:11px">+ 新增項目</button>
+      </div>
+      <div id="checklist-body"></div>
+    </div>
+
+    <!-- 旅費預算 -->
+    <div class="tab-pane" id="pane-budget">
+      <div class="section-header">
+        <div>
+          <div class="section-h">💰 旅費預算</div>
+          <div class="section-sub">基於行程活動估算 · 實際費用依記帳更新</div>
+        </div>
+      </div>
+      <div id="budget-body"></div>
+    </div>
+
+    <!-- 旅遊筆記 -->
+    <div class="tab-pane" id="pane-notes">
+      <div class="section-header">
+        <div>
+          <div class="section-h">📝 旅遊筆記</div>
+          <div class="section-sub">各景點攻略摘要 · 小紅書內容整理</div>
+        </div>
+      </div>
+      <div id="notes-body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="modal-overlay" onclick="closeModal(event)">
+  <div id="modal">
+    <div id="modal-header">
+      <div id="modal-title">編輯</div>
+      <button id="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modal-body"></div>
+    <div id="modal-footer">
+      <button class="modal-btn btn-cancel" onclick="closeModal()">取消</button>
+      <button class="modal-btn btn-save" id="modal-save-btn" onclick="saveModal()">儲存</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════
+const DEFAULT_DATA = {
+  days: [
+    { id:'d1', date:'6/28（六）', label:'抵達上海', type:'free', icon:'✈️',
+      activities:[
+        { id:'a101', time:'16:50', icon:'✈️', title:'高雄出發 BR706', type:'transport',
+          address:'高雄國際機場 (KHH)', cost:0, done:false,
+          mapUrl:'https://www.google.com/maps/search/高雄國際機場',
+          amapUrl:'https://uri.amap.com/search?keyword=高雄国际机场',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=高雄上海機票攻略',
+          tips:['BR706：16:50 起飛，19:05 抵達浦東','建議在台灣換好人民幣現金 2000 元應急','支付寶需提前綁定台灣 Visa/Mastercard'],
+          shoot:[], highlight:false },
+        { id:'a102', time:'19:05', icon:'🛬', title:'抵達上海浦東機場', type:'transport',
+          address:'上海浦東國際機場 T2，浦東新區迎賓大道 6999 號',
+          cost:9, done:false,
+          mapUrl:'https://www.google.com/maps/search/上海浦東國際機場',
+          amapUrl:'https://uri.amap.com/search?keyword=上海浦东国际机场',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=浦东机场攻略台湾人',
+          tips:['地鐵 2 號線進市區：浦東機場→人民廣場，約 47 分鐘，票價 9 元','磁浮到龍陽路再轉地鐵，較快但票價 55 元','市區計程車約 150-200 元','過海關後先換 SIM 卡 or 確認漫遊可用'],
+          shoot:['拍第一腳踩上上海的地板','拍地鐵票價截圖（說明便宜的原因）'], highlight:false },
+        { id:'a103', time:'21:30', icon:'🌃', title:'外灘夜遊', type:'attraction',
+          address:'上海市黃浦區中山東一路（地鐵南京東路站 2 號出口）',
+          cost:0, done:false,
+          mapUrl:'https://www.google.com/maps/search/上海外滩',
+          amapUrl:'https://uri.amap.com/search?keyword=外滩&city=上海',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=上海外滩夜景拍照打卡',
+          tips:['免費 · 全天開放','最佳燈光時間：晚上 20:30 後全亮','南京東路站 2 號出口步行約 10 分鐘','從陸家嘴看外灘也是經典視角'],
+          shoot:['背對江面雙臂展開的 T 字 pose','東方明珠 + 江景的橫移慢搖鏡頭','夜景人像：ISO 不要太高，用夜景模式'], highlight:true },
+      ]
+    },
+    { id:'d2', date:'6/29（日）', label:'🔥 科技三連日', type:'free', icon:'🤖',
+      activities:[
+        { id:'a201', time:'09:30', icon:'🚁', title:'美團無人機外送體驗', type:'tech',
+          address:'上海市楊浦區翔殷路 1099 號（合生匯購物廣場）',
+          cost:30, done:false,
+          mapUrl:'https://www.google.com/maps/search/上海合生汇购物广场',
+          amapUrl:'https://uri.amap.com/search?keyword=合生汇&city=上海',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=美团无人机外卖体验',
+          tips:['地鐵 10 號線「江灣體育場站」步行 10 分鐘','運營時間：10:00–16:45（⚠️ 必須在截止前點餐）','空投櫃位置：黃興公園（楊浦區鞍山路 591 號）','配送費約 7 元人民幣','點餐方式：美團 App → 地址設合生匯 → 選餐廳 → 選「無人機配送」→ 收貨地點選「空投櫃」'],
+          shoot:['App 選「無人機配送」選項的畫面截圖','空投艙打開、餐盒出現的瞬間（最強鏡頭）','拿餐後表情反應口播：「這外賣是無人機從天上送的」'], highlight:true },
+        { id:'a202', time:'12:00', icon:'🚗', title:'小馬智行無人駕駛', type:'tech',
+          address:'浦東新區世紀公園附近（金橋/花木片區）',
+          cost:25, done:false,
+          mapUrl:'https://www.google.com/maps/search/世纪公园+上海',
+          amapUrl:'https://uri.amap.com/search?keyword=世纪公园&city=上海',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=小马智行无人驾驶体验',
+          tips:['下載「小馬智行」App（出發前完成登入）','地鐵 2 號線「世紀公園站」下車','App 叫車 → 掃車身 QR Code 開門 → 繫安全帶才啟動','費用約 15–25 元，運營時間 07:30–21:30（每日）','最多坐 3 人，前排不能坐'],
+          shoot:['等車時 App 顯示「車輛接近中」畫面','掃 QR Code 開車門那一刻','方向盤自己轉的特寫（帳號最強鏡頭）','副駕視角：空著的駕駛座 + 前方道路','下車後口播：「這輛車沒有司機，全程 AI 開的」'], highlight:true },
+        { id:'a203', time:'14:30', icon:'💧', title:'水滴湖（滴水湖）', type:'attraction',
+          address:'上海市浦東新區臨港大道（地鐵 16 號線「滴水湖站」）',
+          cost:18, done:false,
+          mapUrl:'https://www.google.com/maps/search/滴水湖+上海临港',
+          amapUrl:'https://uri.amap.com/search?keyword=滴水湖&city=上海',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=滴水湖临港打卡攻略',
+          tips:['地鐵 2 號線→龍陽路換乘 16 號線→終點站「滴水湖站」，全程約 1 小時，票價 9 元','免費入場','建議 18:00–19:00 待到黃金時段（6 月底日落約 19:15）','2025 年翻新的「上海最美地鐵站」就在這裡'],
+          shoot:['廣角拍完美圓形湖的規模感','站湖邊口播：「這個湖是人工建的，台灣沒有」','日落前金色水面反光（封面等級）','地鐵站月台的美麗設計'], highlight:true },
+      ]
+    },
+    { id:'d3', date:'6/30（一）', label:'跟團 Day1 · 外灘', type:'tour', icon:'🏛️',
+      activities:[
+        { id:'a301', time:'上午', icon:'🤝', title:'接機會合', type:'tour',
+          address:'上海浦東國際機場',cost:0,done:false,
+          mapUrl:'https://www.google.com/maps/search/上海浦東國際機場',
+          amapUrl:'https://uri.amap.com/search?keyword=上海浦东国际机场',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=上海跟团游攻略',
+          tips:['CI581 高雄07:05/上海09:30','CI501 桃園08:40/上海10:50','與團員會合後統一行動'],
+          shoot:['與團員合照記錄'], highlight:false },
+        { id:'a302', time:'下午', icon:'🇮🇹', title:'佛羅倫薩小鎮', type:'attraction',
+          address:'上海市青浦區徐涇鎮崧澤大道 6888 號（比斯特購物村附近）',
+          cost:0,done:false,
+          mapUrl:'https://www.google.com/maps/search/上海佛罗伦萨小镇',
+          amapUrl:'https://uri.amap.com/search?keyword=佛罗伦萨小镇+上海',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=上海佛罗伦萨小镇打卡',
+          tips:['義大利風格建築主題小鎮','結合購物與觀光','視覺反差極強：義式建築 + 中文路牌'],
+          shoot:['義式建築 + 中文招牌反差（「以為自己在義大利」）','圓形廣場噴泉 pose'], highlight:true },
+        { id:'a303', time:'下午', icon:'🏘️', title:'川沙古鎮', type:'attraction',
+          address:'上海市浦東新區川沙新鎮（地鐵 16 號線川沙站）',
+          cost:0,done:false,
+          mapUrl:'https://www.google.com/maps/search/川沙古镇+上海',
+          amapUrl:'https://uri.amap.com/search?keyword=川沙古镇&city=上海',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=川沙古镇打卡',
+          tips:['免費參觀','近迪士尼，交通便利','白牆黑瓦的江南水鄉風格'],
+          shoot:['古橋 + 小河道的構圖','人少的小巷子'], highlight:false },
+        { id:'a304', time:'晚上', icon:'🌃', title:'夜遊外灘（跟團）', type:'attraction',
+          address:'上海市黃浦區中山東一路',
+          cost:0,done:false,
+          mapUrl:'https://www.google.com/maps/search/上海外滩',
+          amapUrl:'https://uri.amap.com/search?keyword=外滩&city=上海',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=上海外滩夜景',
+          tips:['這天是跟團行程，外灘夜景正式拍攝','把 6/28 到的那晚當作暖身，今天認真拍'],
+          shoot:['外灘封面等級素材：橫移全景','江對岸陸家嘴燈光倒影'], highlight:true },
+      ]
+    },
+    { id:'d4', date:'7/1（二）', label:'跟團 Day2 · 杭州', type:'tour', icon:'🏞️',
+      activities:[
+        { id:'a401', time:'上午', icon:'🚌', title:'上海→杭州', type:'transport',
+          address:'約 3.5 小時車程',cost:0,done:false,
+          mapUrl:'https://www.google.com/maps/dir/上海/杭州',
+          amapUrl:'https://uri.amap.com/route?from=上海&to=杭州',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=杭州旅游攻略',
+          tips:['跟團大巴前往杭州','車程約 3.5 小時'],shoot:[], highlight:false },
+        { id:'a402', time:'下午', icon:'🏞️', title:'杭州西湖', type:'attraction',
+          address:'浙江省杭州市西湖區龍井路1號',
+          cost:0,done:false,
+          mapUrl:'https://www.google.com/maps/search/杭州西湖',
+          amapUrl:'https://uri.amap.com/search?keyword=西湖&city=杭州',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=杭州西湖打卡攻略',
+          tips:['🎉 免費入場','斷橋殘雪、蘇堤春曉是最經典拍攝點','湖濱商圈有豐富餐廳','西湖醋魚是必嘗名菜'],
+          shoot:['斷橋 + 西湖全景','免費入場的告示牌（強調免費）','在西湖邊說：「這個地方免費，台灣哪裡有這種湖？」'], highlight:true },
+      ]
+    },
+    { id:'d5', date:'7/2（三）', label:'跟團 Day3 · 金華蘭溪', type:'tour', icon:'🐼',
+      activities:[
+        { id:'a501', time:'上午', icon:'🚌', title:'杭州→金華', type:'transport',
+          address:'約 3 小時車程',cost:0,done:false,
+          mapUrl:'https://www.google.com/maps/dir/杭州/金華',
+          amapUrl:'https://uri.amap.com/route?from=杭州&to=金华',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=金华旅游',
+          tips:[],shoot:[], highlight:false },
+        { id:'a502', time:'下午', icon:'🐼', title:'金華熊貓豬豬樂園', type:'attraction',
+          address:'浙江省金華市金東區孝順鎮',
+          cost:0,done:false,
+          mapUrl:'https://www.google.com/maps/search/金华熊猫猪猪乐园',
+          amapUrl:'https://uri.amap.com/search?keyword=熊猫猪猪乐园&city=金华',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=金华熊猫猪猪乐园',
+          tips:['台灣人完全沒聽過的主題樂園','超可愛動物近距離接觸','適合拍可愛反應視頻'],
+          shoot:['動物特寫 + 驚喜表情','說：「大陸有個主題樂園台灣人完全不知道」','拍門票價格'], highlight:true },
+        { id:'a503', time:'下午', icon:'🛠️', title:'手作工坊體驗', type:'activity',
+          address:'金華市內',cost:0,done:false,
+          mapUrl:'https://www.google.com/maps/search/金华',
+          amapUrl:'https://uri.amap.com/search?keyword=金华手作工坊',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=金华手作体验',
+          tips:['文化體驗活動','可拍製作過程'],
+          shoot:['製作過程快剪 15 秒'], highlight:false },
+        { id:'a504', time:'晚上', icon:'🥂', title:'蘭溪歡迎晚宴', type:'food',
+          address:'蘭溪市內',cost:0,done:false,
+          mapUrl:'https://www.google.com/maps/search/兰溪',
+          amapUrl:'https://uri.amap.com/search?keyword=兰溪&city=兰溪',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=兰溪美食',
+          tips:['當地特色料理','豐盛桌菜視覺效果強'],
+          shoot:['滿桌菜色的豐盛感','當地特色菜名特寫'], highlight:false },
+      ]
+    },
+    { id:'d6', date:'7/3（四）', label:'跟團 Day4 · 游埠古鎮', type:'tour', icon:'🏯',
+      activities:[
+        { id:'a601', time:'上午', icon:'🏯', title:'游埠古鎮', type:'attraction',
+          address:'浙江省蘭溪市游埠鎮',
+          cost:0,done:false,
+          mapUrl:'https://www.google.com/maps/search/游埠古镇+兰溪',
+          amapUrl:'https://uri.amap.com/search?keyword=游埠古镇&city=兰溪',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=游埠古镇早茶攻略',
+          tips:['免費入場','江南第一早茶街','1300 年歷史古鎮，未過度商業化','必吃：雞子顆、肉沉子、豆腐湯圓、金華酥餅','五馬歸槽古橋是最強拍攝點','凌晨 4 點就有攤販開市'],
+          shoot:['早市攤販的煙火氣','古橋 + 小河道的水墨畫構圖','說：「游埠古鎮，台灣人沒聽過的江南古城」'], highlight:true },
+        { id:'a602', time:'下午', icon:'⚡', title:'零跑汽車綠色工廠', type:'tech',
+          address:'浙江省金華市婺城區（零跑科技）',
+          cost:0,done:false,
+          mapUrl:'https://www.google.com/maps/search/零跑汽车工厂+金华',
+          amapUrl:'https://uri.amap.com/search?keyword=零跑汽车&city=金华',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=零跑汽车工厂参观',
+          tips:['零跑是大陸新能源汽車品牌','參觀生產線，了解電動車製造流程','環保主題，科技感十足'],
+          shoot:['生產線全景','說：「這是大陸電動車工廠，難怪比台灣便宜那麼多」'], highlight:true },
+        { id:'a603', time:'晚上', icon:'🎭', title:'婺劇欣賞或夜遊古子城', type:'culture',
+          address:'金華市婺城區古子城歷史文化街區',
+          cost:0,done:false,
+          mapUrl:'https://www.google.com/maps/search/金华古子城',
+          amapUrl:'https://uri.amap.com/search?keyword=古子城&city=金华',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=金华古子城夜游',
+          tips:['婺劇是浙江地方戲曲','古子城夜晚燈光很強，適合拍照'],
+          shoot:['古建築打燈的夜景','婺劇演員特寫'], highlight:false },
+      ]
+    },
+    { id:'d7', date:'7/4（五）', label:'🔥 義烏商貿城', type:'tour', icon:'🛍️',
+      activities:[
+        { id:'a701', time:'上午', icon:'🏪', title:'義烏商貿城六區（春晚分會場）', type:'shopping',
+          address:'浙江省義烏市義烏國際商貿城六區（稠州北路）',
+          cost:0,done:false,
+          mapUrl:'https://www.google.com/maps/search/义乌国际商贸城',
+          amapUrl:'https://uri.amap.com/search?keyword=义乌国际商贸城&city=义乌',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=义乌商贸城采购攻略',
+          tips:['2026 春晚分會場就在六區','拍攝大型舞台裝置和規模感','感受世界最大批發市場的震撼'],
+          shoot:['進館第一步的驚訝反應（最重要鏡頭）','場館超大規模感的廣角照','春晚分會場裝置特寫'], highlight:true },
+        { id:'a702', time:'下午', icon:'🛒', title:'義烏商貿城四區（日用小商品）', type:'shopping',
+          address:'浙江省義烏市義烏國際商貿城四區（福田路）',
+          cost:500,done:false,
+          mapUrl:'https://www.google.com/maps/search/义乌国际商贸城四区',
+          amapUrl:'https://uri.amap.com/search?keyword=义乌商贸城四区&city=义乌',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=义乌商贸城四区日用品',
+          tips:['四區主攻日用品、飾品、玩具','找到超便宜商品即時說出台幣換算','殺價是文化，開口就砍'],
+          shoot:['商品標價特寫（台幣換算）','採購結帳畫面','袋子全家福（所有戰利品）'], highlight:true },
+      ]
+    },
+    { id:'d8', date:'7/5（六）', label:'🔥 橫店漢服打卡', type:'tour', icon:'👘',
+      activities:[
+        { id:'a801', time:'全天', icon:'🎬', title:'橫店影視城漢服打卡', type:'attraction',
+          address:'浙江省東陽市橫店影視城',
+          cost:200,done:false,
+          mapUrl:'https://www.google.com/maps/search/横店影视城',
+          amapUrl:'https://uri.amap.com/search?keyword=横店影视城&city=东阳',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=横店影视城汉服打卡',
+          tips:['漢服租借約 100-200 元（含妝造）','造型師會幫忙搭配服裝','秦王宮、清明上河圖等場景最上鏡','逆光拍攝漢服飄逸感最佳'],
+          shoot:['換裝前後對比（現代→古裝）','漢服廣袖側身回眸 pose','古建築廊柱前站立','漢服費用收據特寫（說明多便宜）'], highlight:true },
+        { id:'a802', time:'傍晚', icon:'🚌', title:'橫店→上海', type:'transport',
+          address:'橫店→上海，車程約 3 小時',
+          cost:0,done:false,
+          mapUrl:'https://www.google.com/maps/dir/横店/上海',
+          amapUrl:'https://uri.amap.com/route?from=横店&to=上海',
+          xhsUrl:'',
+          tips:['返回上海住宿','在車上整理今天拍攝的素材'],
+          shoot:['義烏戰利品整理、攤開拍照'], highlight:false },
+      ]
+    },
+    { id:'d9', date:'7/6（日）', label:'回程', type:'free', icon:'🛫',
+      activities:[
+        { id:'a901', time:'上午', icon:'🧳', title:'整理行李＋戰利品全家福', type:'activity',
+          address:'上海住宿飯店',cost:0,done:false,
+          mapUrl:'',amapUrl:'',
+          xhsUrl:'',
+          tips:['把在義烏買的所有東西攤開拍一張「戰利品全家福」','計算整趟旅遊總花費並截圖','這是「總花費大公開」那支爆款影片的素材'],
+          shoot:['義烏戰利品全家福（攤開在床上拍）','總花費計算截圖','出發前口播：「X天花了XX，值不值？」'], highlight:true },
+        { id:'a902', time:'20:05', icon:'🛫', title:'上海浦東→高雄 BR705', type:'transport',
+          address:'上海浦東國際機場 T1',
+          cost:0,done:false,
+          mapUrl:'https://www.google.com/maps/search/上海浦東國際機場',
+          amapUrl:'https://uri.amap.com/search?keyword=上海浦东国际机场',
+          xhsUrl:'',
+          tips:['BR705：20:05 起飛，22:20 抵達高雄','提前 3 小時到機場（19:05 前）','機場可買紀念品'],
+          shoot:[], highlight:false },
+      ]
+    },
+  ],
+
+  hotels: [
+    { id:'h1', city:'上海', nights:'6/28 - 6/30（自費）', name:'全季酒店（外灘/南京路區）',
+      emoji:'🏨', price:'約 NT$1,500-2,200/晚', confirmed:false,
+      bookUrl:'https://www.agoda.com/zh-tw/search?city=12115&checkIn=2026-06-28&checkOut=2026-06-30&keyword=全季+南京路',
+      tip:'推薦住外灘、南京路附近，走路到外灘 10 分鐘' },
+    { id:'h2', city:'上海', nights:'6/28 - 6/30（自費）', name:'漢庭優選（人民廣場）',
+      emoji:'🏩', price:'約 NT$900-1,400/晚', confirmed:false,
+      bookUrl:'https://www.agoda.com/zh-tw/search?city=12115&checkIn=2026-06-28&checkOut=2026-06-30&keyword=汉庭+人民广场',
+      tip:'性價比高，人民廣場正中心，地鐵超方便' },
+    { id:'h3', city:'上海', nights:'6/28 - 6/30（自費）', name:'錦江之星（新天地/外灘）',
+      emoji:'🏪', price:'約 NT$700-1,000/晚', confirmed:false,
+      bookUrl:'https://www.agoda.com/zh-tw/search?city=12115&checkIn=2026-06-28&checkOut=2026-06-30&keyword=锦江之星+新天地',
+      tip:'超值選擇，新天地文藝區，附近餐廳很多' },
+    { id:'h4', city:'杭州', nights:'7/1（跟團安排）', name:'跟團住宿（已安排）',
+      emoji:'✅', price:'跟團包含', confirmed:true, bookUrl:'', tip:'跟團統一安排' },
+    { id:'h5', city:'蘭溪', nights:'7/2（跟團安排）', name:'跟團住宿（已安排）',
+      emoji:'✅', price:'跟團包含', confirmed:true, bookUrl:'', tip:'跟團統一安排' },
+    { id:'h6', city:'金華', nights:'7/3（跟團安排）', name:'跟團住宿（已安排）',
+      emoji:'✅', price:'跟團包含', confirmed:true, bookUrl:'', tip:'跟團統一安排' },
+    { id:'h7', city:'義烏', nights:'7/4（跟團安排）', name:'跟團住宿（已安排）',
+      emoji:'✅', price:'跟團包含', confirmed:true, bookUrl:'', tip:'跟團統一安排' },
+    { id:'h8', city:'上海', nights:'7/5（跟團安排）', name:'跟團住宿（已安排）',
+      emoji:'✅', price:'跟團包含', confirmed:true, bookUrl:'', tip:'跟團統一安排' },
+  ],
+
+  checklist: [
+    { id:'c1', cat:'🔴 最優先（沒有就玩不到）', items:[
+      { id:'ci1', label:'下載「小馬智行」App + 完成手機號登入', done:false, priority:'p1' },
+      { id:'ci2', label:'開通支付寶（綁台灣 Visa/Mastercard）', done:false, priority:'p1' },
+      { id:'ci3', label:'下載「美團」App + 設定支付', done:false, priority:'p1' },
+      { id:'ci4', label:'台灣 SIM 開通大陸漫遊 or 買中國聯通 eSIM', done:false, priority:'p1' },
+      { id:'ci5', label:'確認台胞證有效期（建議 6 個月以上）', done:false, priority:'p1' },
+      { id:'ci6', label:'下載「記帳 App」（隨手記），每筆消費記錄', done:false, priority:'p1' },
+    ]},
+    { id:'c2', cat:'🟡 次優先（提前準備更好）', items:[
+      { id:'ci7', label:'下載「CapCut 剪映」，設好 9:16 空白專案', done:false, priority:'p2' },
+      { id:'ci8', label:'下載「滴滴出行」（叫車備用）', done:false, priority:'p2' },
+      { id:'ci9', label:'義烏商貿城：查好六區（春晚場）和四區（日用品）位置', done:false, priority:'p2' },
+      { id:'ci10', label:'換好人民幣現金約 2000 元', done:false, priority:'p2' },
+      { id:'ci11', label:'帶行動電源（一天拍攝耗電量大）', done:false, priority:'p2' },
+      { id:'ci12', label:'準備小型補光燈（室內和夜間拍攝）', done:false, priority:'p2' },
+    ]},
+    { id:'c3', cat:'🟢 證件 & 衣物', items:[
+      { id:'ci13', label:'台胞證 / 護照', done:false, priority:'p1' },
+      { id:'ci14', label:'機票（BR706 / BR705）確認', done:false, priority:'p1' },
+      { id:'ci15', label:'衣服 × 7 天（可在義烏買便宜的補充）', done:false, priority:'p3' },
+      { id:'ci16', label:'換洗衣物 × 3 套', done:false, priority:'p3' },
+      { id:'ci17', label:'舒適步行鞋（每天走很多路）', done:false, priority:'p2' },
+      { id:'ci18', label:'防曬乳、雨傘（6 月上海多雨）', done:false, priority:'p2' },
+    ]},
+    { id:'c4', cat:'📱 拍攝設備', items:[
+      { id:'ci19', label:'手機充滿電 + 備用行動電源 × 2', done:false, priority:'p1' },
+      { id:'ci20', label:'清理手機儲存空間（至少 30GB 可用）', done:false, priority:'p1' },
+      { id:'ci21', label:'廣角手機鏡頭夾（選配）', done:false, priority:'p3' },
+      { id:'ci22', label:'迷你三腳架 or 手持穩定器', done:false, priority:'p2' },
+      { id:'ci23', label:'補光燈小夾子', done:false, priority:'p2' },
+    ]},
+  ],
+
+  budget: [
+    { icon:'✈️', label:'機票（高雄↔上海）', amount:8000, note:'BR706 + BR705' },
+    { icon:'🏨', label:'住宿（上海自費 2 晚）', amount:3000, note:'均價 NT$1,500/晚' },
+    { icon:'🚇', label:'市區交通', amount:800, note:'地鐵、滴滴等' },
+    { icon:'🚁', label:'美團無人機外送體驗', amount:100, note:'餐費+配送費' },
+    { icon:'🚗', label:'小馬智行', amount:80, note:'約 25 元人民幣' },
+    { icon:'🛍️', label:'義烏採購', amount:2000, note:'依個人採購量' },
+    { icon:'👘', label:'橫店漢服', amount:600, note:'租借含妝造' },
+    { icon:'🍜', label:'餐飲（自費部分）', amount:3000, note:'均每天約 NT$500' },
+    { icon:'🎟️', label:'其他門票 & 活動', amount:1500, note:'熊貓樂園等' },
+  ],
+
+  notes: {},
+  selectedActivity: null,
+};
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let state = JSON.parse(localStorage.getItem('travel2026') || 'null') || JSON.parse(JSON.stringify(DEFAULT_DATA));
+let modalMode = '';
+let modalTarget = null;
+
+function save() {
+  localStorage.setItem('travel2026', JSON.stringify(state));
+  updateProgress();
+}
+
+// ══════════════════════════════════════════
+// PROGRESS
+// ══════════════════════════════════════════
+function updateProgress() {
+  let total = 0, done = 0;
+  state.days.forEach(d => d.activities.forEach(a => { total++; if(a.done) done++; }));
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('progress-fill').style.width = pct+'%';
+  document.getElementById('progress-text').textContent = pct+'%';
+}
+
+// ══════════════════════════════════════════
+// RENDER SIDEBAR
+// ══════════════════════════════════════════
+function renderSidebar() {
+  const list = document.getElementById('day-list');
+  list.innerHTML = state.days.map(d => {
+    const doneCnt = d.activities.filter(a=>a.done).length;
+    const badge = d.type==='free' ? 'badge-free' : d.label.includes('🔥') ? 'badge-hot' : 'badge-tour';
+    const badgeText = d.type==='free' ? '自由行' : '跟團';
+    const isOpen = d.open;
+    return `
+    <div class="day-group">
+      <div class="day-header ${isOpen?'open':''}" onclick="toggleDay('${d.id}',this)">
+        <div class="day-icon">${d.icon}</div>
+        <div class="day-info">
+          <div class="day-date">${d.date}</div>
+          <div class="day-label">${d.label}</div>
+          <div class="day-meta">
+            <span class="day-badge ${badge}">${badgeText}</span>
+            <span style="font-size:9px;color:#445;margin-left:2px">${doneCnt}/${d.activities.length} 完成</span>
+          </div>
+        </div>
+        <div class="day-chevron">▶</div>
+      </div>
+      <div class="activity-list">
+        ${d.activities.map(a => `
+          <div class="activity-item ${state.selectedActivity===a.id?'selected':''}" onclick="selectActivity('${a.id}')">
+            <div class="act-check ${a.done?'checked':''}" onclick="toggleDone(event,'${a.id}')">
+              ${a.done?'✓':''}
+            </div>
+            <div class="act-icon">${a.icon}</div>
+            <div class="act-body">
+              <div class="act-time">${a.time}</div>
+              <div class="act-title ${a.done?'done':''}">${a.title}</div>
+            </div>
+            ${a.cost>0?`<div class="act-cost">NT$${a.cost}</div>`:''}
+          </div>
+        `).join('')}
+        <button class="add-act-btn" onclick="showModal('add-activity','${d.id}')">＋ 新增景點</button>
+      </div>
+    </div>`;
+  }).join('');
+  updateProgress();
+}
+
+function toggleDay(dayId, el) {
+  const d = state.days.find(x=>x.id===dayId);
+  d.open = !d.open;
+  save();
+  renderSidebar();
+}
+
+function toggleDone(e, actId) {
+  e.stopPropagation();
+  for(const d of state.days) {
+    const a = d.activities.find(x=>x.id===actId);
+    if(a) { a.done = !a.done; break; }
+  }
+  save();
+  renderSidebar();
+  if(state.selectedActivity===actId) renderDetail(actId);
+}
+
+function selectActivity(actId) {
+  state.selectedActivity = actId;
+  save();
+  renderSidebar();
+  switchTab('detail', document.querySelector('.tab'));
+  document.querySelectorAll('.tab')[0].click();
+  renderDetail(actId);
+}
+
+// ══════════════════════════════════════════
+// RENDER DETAIL
+// ══════════════════════════════════════════
+function getActivity(actId) {
+  for(const d of state.days) {
+    const a = d.activities.find(x=>x.id===actId);
+    if(a) return a;
+  }
+  return null;
+}
+
+function renderDetail(actId) {
+  const placeholder = document.getElementById('detail-placeholder');
+  const content = document.getElementById('detail-content');
+  const a = getActivity(actId);
+  if(!a) { placeholder.style.display='flex'; content.style.display='none'; return; }
+  placeholder.style.display='none';
+  content.style.display='block';
+  const mapLinks = [
+    a.mapUrl ? `<a href="${a.mapUrl}" target="_blank" class="link-btn btn-maps">🗺 Google 地圖</a>` : '',
+    a.amapUrl ? `<a href="${a.amapUrl}" target="_blank" class="link-btn btn-amap">📍 高德地圖</a>` : '',
+    a.xhsUrl ? `<a href="${a.xhsUrl}" target="_blank" class="link-btn btn-xhs">📕 小紅書搜索</a>` : '',
+  ].filter(Boolean).join('');
+  const tipsList = (a.tips||[]).map(t=>`<li>${t}</li>`).join('');
+  const shootList = (a.shoot||[]).map(t=>`<li>${t}</li>`).join('');
+  const noteVal = (state.notes||{})[actId] || '';
+  content.innerHTML = `
+    <div class="detail-card">
+      <div class="detail-header">
+        <div class="detail-icon-title">
+          <div class="detail-icon">${a.icon}</div>
+          <div>
+            <div class="detail-title">${a.title}</div>
+            <div class="detail-subtitle">${a.time} · ${a.type==='tech'?'🤖 科技體驗':a.type==='attraction'?'🏛 景點':a.type==='transport'?'🚌 交通':a.type==='food'?'🍜 飲食':a.type==='shopping'?'🛍 購物':a.type==='culture'?'🎭 文化':'📌 活動'}</div>
+          </div>
+        </div>
+        <div class="detail-actions">
+          <button class="icon-btn" title="標記完成" onclick="toggleDone(event,'${a.id}')">${a.done?'✅':'⬜'}</button>
+          <button class="icon-btn" title="編輯" onclick="showModal('edit-activity','${a.id}')">✏️</button>
+        </div>
+      </div>
+      ${a.address ? `<div class="detail-addr"><span class="addr-icon">📍</span>${a.address}</div>` : ''}
+      <div class="link-row">${mapLinks}</div>
+      <div class="detail-sections">
+        ${a.highlight ? '<span class="highlight-badge">🔥 爆款素材重點景點</span>' : ''}
+        ${a.cost > 0 ? `<span class="cost-badge" style="margin-left:6px">💰 預估 NT$${a.cost}</span>` : '<span class="cost-badge" style="margin-left:6px">🎉 免費</span>'}
+        ${tipsList ? `<div class="section-block"><div class="section-title">💡 攻略提示</div><ul class="tip-list">${tipsList}</ul></div>` : ''}
+        ${shootList ? `<div class="section-block"><div class="section-title">📸 必拍鏡頭</div><ul class="tip-list">${shootList}</ul></div>` : ''}
+        <div class="section-block">
+          <div class="section-title">📝 我的備注</div>
+          <textarea class="notes-area" placeholder="記錄想法、提醒、聯絡人..."
+            onblur="saveNote('${a.id}',this.value)">${noteVal}</textarea>
+        </div>
+      </div>
+    </div>`;
+}
+
+function saveNote(actId, val) {
+  if(!state.notes) state.notes = {};
+  state.notes[actId] = val;
+  save();
+}
+
+// ══════════════════════════════════════════
+// RENDER HOTELS
+// ══════════════════════════════════════════
+function renderHotels() {
+  const grid = document.getElementById('hotels-list');
+  grid.innerHTML = state.hotels.map(h => `
+    <div class="hotel-card">
+      <div class="hotel-img" style="background:${hotelBg(h.city)}">
+        <span style="font-size:40px">${h.emoji}</span>
+        ${h.confirmed ? '<span class="hotel-confirmed-badge">✓ 已確認</span>' : (h.bookUrl?'':'<span class="hotel-arranged-badge">跟團安排</span>')}
+      </div>
+      <div class="hotel-body">
+        <div class="hotel-city">${h.city}</div>
+        <div class="hotel-name">${h.name}</div>
+        <div class="hotel-nights">📅 ${h.nights}</div>
+        <div class="hotel-price">${h.price}</div>
+        ${h.tip ? `<div style="font-size:10px;color:#888;margin-top:2px">💡 ${h.tip}</div>` : ''}
+        <div class="hotel-actions">
+          ${h.bookUrl ? `<a href="${h.bookUrl}" target="_blank" class="hotel-btn hb-book">🔍 查詢訂房</a>` : ''}
+          <button class="hotel-btn hb-check ${h.confirmed?'confirmed':''}"
+            onclick="toggleHotel('${h.id}')">${h.confirmed?'✓ 已確認':'○ 待確認'}</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function hotelBg(city) {
+  const map = {'上海':'linear-gradient(135deg,#1b2838,#2a3f5f)','杭州':'linear-gradient(135deg,#1a3c2e,#2a6044)','蘭溪':'linear-gradient(135deg,#3c2a1a,#6b4a2a)','金華':'linear-gradient(135deg,#2a1a3c,#4a2a6b)','義烏':'linear-gradient(135deg,#3c1a1a,#8b3a2a)'};
+  return map[city] || 'linear-gradient(135deg,#2a2a3c,#3a3a5c)';
+}
+
+function toggleHotel(hid) {
+  const h = state.hotels.find(x=>x.id===hid);
+  if(h) { h.confirmed = !h.confirmed; save(); renderHotels(); }
+}
+
+// ══════════════════════════════════════════
+// RENDER CHECKLIST
+// ══════════════════════════════════════════
+function renderChecklist() {
+  const body = document.getElementById('checklist-body');
+  body.innerHTML = state.checklist.map(cat => `
+    <div class="checklist-category">
+      <div class="cat-header">
+        <div class="cat-title">${cat.cat}</div>
+        <div class="cat-count">${cat.items.filter(i=>i.done).length}/${cat.items.length}</div>
+      </div>
+      <div class="cat-body">
+        ${cat.items.map(item => `
+          <div class="check-row">
+            <div class="check-box ${item.done?'checked':''}" onclick="toggleCheck('${item.id}')">
+              ${item.done?'✓':''}
+            </div>
+            <div class="check-label ${item.done?'done':''}">${item.label}</div>
+            <span class="check-priority ${item.priority}">${{p1:'必做',p2:'建議',p3:'加分'}[item.priority]}</span>
+          </div>
+        `).join('')}
+        <div class="add-item-row">
+          <input class="add-item-input" placeholder="新增項目..." id="add-input-${cat.id}" onkeypress="if(event.key==='Enter')addCheckItem('${cat.id}')">
+          <button class="add-item-btn" onclick="addCheckItem('${cat.id}')">＋</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleCheck(itemId) {
+  for(const cat of state.checklist) {
+    const item = cat.items.find(x=>x.id===itemId);
+    if(item) { item.done = !item.done; break; }
+  }
+  save(); renderChecklist();
+}
+
+function addCheckItem(catId) {
+  const input = document.getElementById('add-input-'+catId);
+  const val = input.value.trim();
+  if(!val) return;
+  const cat = state.checklist.find(x=>x.id===catId);
+  cat.items.push({ id:'ci'+Date.now(), label:val, done:false, priority:'p3' });
+  input.value = '';
+  save(); renderChecklist();
+}
+
+// ══════════════════════════════════════════
+// RENDER BUDGET
+// ══════════════════════════════════════════
+function renderBudget() {
+  const body = document.getElementById('budget-body');
+  const total = state.budget.reduce((s,b)=>s+b.amount,0);
+  const perPerson = Math.round(total/2);
+  body.innerHTML = `
+    <div class="budget-summary">
+      <div class="budget-card"><div class="budget-num">NT$${total.toLocaleString()}</div><div class="budget-label">總預算（2人）</div></div>
+      <div class="budget-card"><div class="budget-num">NT$${perPerson.toLocaleString()}</div><div class="budget-label">每人估算</div></div>
+      <div class="budget-card"><div class="budget-num">${Math.round(total*0.22).toLocaleString()}</div><div class="budget-label">人民幣換算（估）</div></div>
+    </div>
+    <div class="budget-list">
+      ${state.budget.map(b=>`
+        <div class="budget-row">
+          <div class="budget-row-icon">${b.icon}</div>
+          <div class="budget-row-label">${b.label}</div>
+          <div class="budget-row-amount">NT$${b.amount.toLocaleString()}</div>
+          <div class="budget-row-note">${b.note}</div>
+        </div>`).join('')}
+      <div class="budget-row" style="font-weight:700;background:#fffaf7">
+        <div class="budget-row-icon">📊</div>
+        <div class="budget-row-label">合計（2人）</div>
+        <div class="budget-row-amount" style="font-size:15px">NT$${total.toLocaleString()}</div>
+        <div class="budget-row-note">每人 NT$${perPerson.toLocaleString()}</div>
+      </div>
+    </div>`;
+}
+
+// ══════════════════════════════════════════
+// RENDER NOTES
+// ══════════════════════════════════════════
+function renderNotesPanel() {
+  const body = document.getElementById('notes-body');
+  const xhsNotes = [
+    {
+      title:'🌃 上海外灘',
+      xhs:'https://www.xiaohongshu.com/search_result?keyword=上海外滩打卡',
+      tips:`<b>最佳拍照時段：</b>傍晚17:00後，可以連拍夕陽→黃昏→夜景三個光線。<br>
+<b>小眾機位：</b>①乍浦路橋（可同框外白渡橋＋東方明珠）②郵政博物館門口（偏軸心視角）③北外灘濱江往南拍大全景。<br>
+<b>注意：</b>外灘燈光秀 22:00 準時關閉，要拍亮燈版至少 21:30 前到位。穿淺色系衣服湖面反光拍起來更乾淨。<br>
+<b>小紅書關鍵字：</b>外灘逆光、外灘夜景機位、北外灘打卡`
+    },
+    {
+      title:'🛍️ 義烏商貿城',
+      xhs:'https://www.xiaohongshu.com/search_result?keyword=义乌商贸城采购',
+      tips:`<b>商城共 5 期</b>，一期（玩具飾品）→四期（戶外、文具）→六期（小禮品）是台灣人最常逛的三區，一天只夠認真逛一期。<br>
+<b>採購現實：</b>大部分攤位最低起批 12 件起，拍照詢價要有心理準備，純拿樣品的人老闆臉色較差。<br>
+<b>時間：</b>09:00–17:00，下午 16:00 後許多攤主開始收攤，建議一開門就進去。<br>
+<b>鞋子：</b>一定穿平底鞋！整個市場走一圈超過 10 公里。<br>
+<b>小紅書關鍵字：</b>義烏採購攻略台灣、義烏商貿城怎麼逛`
+    },
+    {
+      title:'🎬 橫店影視城',
+      xhs:'https://www.xiaohongshu.com/search_result?keyword=横店漢服拍照',
+      tips:`<b>必去 3 館：</b>①秦王宮（宏偉宮殿＋帝國江山特效表演）②清明上河圖（北宋街道，租古裝拍照超出片）③夢幻谷（夏季開放水世界）。<br>
+<b>漢服租借：</b>景區內多家店，約 RMB 50–120 含妝造，秦王宮門口最多選擇。<br>
+<b>各館距離遠</b>，建議打車或景區接駁車，不要走路節省時間。<br>
+<b>聯票攻略：</b>購買3日聯票可選5個館，若只有半天，選「秦王宮」最值回票價。<br>
+<b>小紅書關鍵字：</b>橫店一日遊攻略、橫店秦王宮漢服`
+    },
+    {
+      title:'🏯 杭州西湖',
+      xhs:'https://www.xiaohongshu.com/search_result?keyword=杭州西湖免費攻略',
+      tips:`<b>黃金路線：</b>斷橋殘雪 → 白堤（步行15分鐘）→ 乘船至三潭印月 → 蘇堤南口 → 雷峰塔，半天可走完。<br>
+<b>最佳時段：</b>早上 8 點前 or 傍晚 17 點後，人少光線好。早上 6 點的斷橋幾乎無人，晨霧＋水光絕美。<br>
+<b>出片技巧：</b>白堤旁木棧道拍湖景倒影比站在橋面上更出片，穿淺色系衣服。<br>
+<b>搭乘：</b>地鐵1號線「龍翔橋站」C口出，步行5分鐘到斷橋。<br>
+<b>小紅書關鍵字：</b>西湖免費景點、杭州一日遊窮遊`
+    },
+    {
+      title:'🍵 游埠古鎮早茶',
+      xhs:'https://www.xiaohongshu.com/search_result?keyword=游埠古镇早茶',
+      tips:`<b>全中國最知名的古鎮早茶</b>，距今 1300 年，520 米老街兩側百餘家早點舖。<br>
+<b>開門時間：</b>04:30 開始營業！6 點後遊客湧入，假日凌晨就有人自駕來排隊。<br>
+<b>必吃清單：</b>①肉沉子（炸物＋鮮肉餡）②雞子顆（香蔥雞蛋炸物）③豆腐湯圓（入口即化）④金華酥餅（梅乾菜肉餡，現烤出爐）。<br>
+<b>消費：</b>人均 RMB 15 元吃飽，超級便宜。<br>
+<b>小紅書關鍵字：</b>游埠古鎮早茶、蘭溪游埠攻略`
+    },
+    {
+      title:'💧 滴水湖（臨港）',
+      xhs:'https://www.xiaohongshu.com/search_result?keyword=滴水湖临港打卡',
+      tips:`<b>交通：</b>地鐵 16 號線直達終點站「滴水湖站」，車程約 60 分鐘，站台本身就是網紅打卡點（圓形穹頂設計超美）。<br>
+<b>免費入場</b>，湖邊 300 個停車位全天免費開放。<br>
+<b>環湖路：</b>8 公里環湖步道，可騎共享單車遊湖，傍晚金光灑落湖面是最出片的時刻。<br>
+<b>北岛：</b>有大片草地，適合露營野餐拍照。<br>
+<b>科技三連時間建議：</b>此站安排傍晚 16:30 後，等夕陽下山再回市區。<br>
+<b>小紅書關鍵字：</b>滴水湖地鐵站打卡、臨港新城環湖`
+    },
+    {
+      title:'🚗 小馬智行無人駕駛',
+      xhs:'https://www.xiaohongshu.com/search_result?keyword=小马智行体验',
+      tips:`<b>預約方式：</b>微信搜尋小程序「錦江智行」或「享道出行」，開啟 App 可看到路線和車輛位置。<br>
+<b>運營範圍：</b>浦東新區世紀公園、金橋、花木地區，不是全上海都能叫。<br>
+<b>體驗重點：</b>上車後方向盤會自動轉動，安全員全程不碰方向盤，可用手機拍攝第一視角畫面（適合 Reel 素材）。<br>
+<b>費用：</b>與一般計程車相近，約 RMB 20–40 視距離。<br>
+<b>時間：</b>07:30–21:30，建議白天去拍攝視角較清晰。<br>
+<b>小紅書關鍵字：</b>小馬智行體驗全流程、上海無人駕駛計程車`
+    },
+    {
+      title:'🚁 美團無人機外送',
+      xhs:'https://www.xiaohongshu.com/search_result?keyword=美团无人机外卖',
+      tips:`<b>地點：</b>楊浦區翔殷路 1099 號合生匯商場（固定航線起降點）。空投點在黃興公園附近。<br>
+<b>服務時間：</b>10:00–16:45，超過時間就關閉，要早點去！<br>
+<b>操作流程：</b>①在美團 App 選擇支援無人機的外賣商家②下單選無人機配送③到指定空投艙等待取餐④掃碼開艙取餐。<br>
+<b>速度：</b>生煎包等輕食最快 7–8 分鐘送達。<br>
+<b>拍攝重點：</b>無人機降落、艙門開啟的瞬間是最有衝擊力的畫面，提前架好手機錄影。<br>
+<b>小紅書關鍵字：</b>美團無人機外賣上海實測、楊浦無人機外送`
+    },
+  ];
+  body.innerHTML = xhsNotes.map(n=>`
+    <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <div style="font-size:13px;font-weight:800">${n.title}</div>
+        <a href="${n.xhs}" target="_blank" class="link-btn btn-xhs" style="font-size:10px;padding:5px 10px">📕 小紅書搜索</a>
+      </div>
+      <div style="font-size:11px;color:#555;line-height:1.6">${n.tips}</div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════
+function switchTab(tab, el) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.getElementById('pane-'+tab).classList.add('active');
+  if(tab==='hotels') renderHotels();
+  if(tab==='checklist') renderChecklist();
+  if(tab==='budget') renderBudget();
+  if(tab==='notes') renderNotesPanel();
+  if(tab==='detail' && state.selectedActivity) renderDetail(state.selectedActivity);
+}
+
+// ══════════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════════
+function showModal(mode, target) {
+  modalMode = mode;
+  modalTarget = target;
+  const overlay = document.getElementById('modal-overlay');
+  const body = document.getElementById('modal-body');
+  const title = document.getElementById('modal-title');
+  overlay.classList.add('show');
+  if(mode==='edit-activity') {
+    const a = getActivity(target);
+    title.textContent = '編輯景點';
+    body.innerHTML = `
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">時間</label><input class="form-input" id="f-time" value="${a.time}"></div>
+        <div class="form-group"><label class="form-label">圖示 Emoji</label><input class="form-input" id="f-icon" value="${a.icon}"></div>
+      </div>
+      <div class="form-group"><label class="form-label">景點名稱</label><input class="form-input" id="f-title" value="${a.title}"></div>
+      <div class="form-group"><label class="form-label">地址</label><input class="form-input" id="f-address" value="${a.address||''}"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">預估費用 (NT$)</label><input class="form-input" id="f-cost" type="number" value="${a.cost}"></div>
+        <div class="form-group"><label class="form-label">爆款亮點</label><select class="form-input" id="f-highlight"><option value="false" ${!a.highlight?'selected':''}>一般景點</option><option value="true" ${a.highlight?'selected':''}>🔥 爆款亮點</option></select></div>
+      </div>
+      <div class="form-group"><label class="form-label">攻略提示（每行一條）</label><textarea class="form-input" id="f-tips" rows="4">${(a.tips||[]).join('\n')}</textarea></div>
+      <div class="form-group"><label class="form-label">必拍鏡頭（每行一條）</label><textarea class="form-input" id="f-shoot" rows="3">${(a.shoot||[]).join('\n')}</textarea></div>`;
+  } else if(mode==='add-activity') {
+    title.textContent = '新增景點';
+    body.innerHTML = `
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">時間</label><input class="form-input" id="f-time" placeholder="09:30"></div>
+        <div class="form-group"><label class="form-label">圖示 Emoji</label><input class="form-input" id="f-icon" placeholder="🏛️"></div>
+      </div>
+      <div class="form-group"><label class="form-label">景點名稱 *</label><input class="form-input" id="f-title" placeholder="景點名稱"></div>
+      <div class="form-group"><label class="form-label">地址</label><input class="form-input" id="f-address" placeholder="完整地址"></div>
+      <div class="form-group"><label class="form-label">預估費用 (NT$)</label><input class="form-input" id="f-cost" type="number" value="0"></div>
+      <div class="form-group"><label class="form-label">攻略提示（每行一條）</label><textarea class="form-input" id="f-tips" rows="3" placeholder="小提示..."></textarea></div>`;
+  } else if(mode==='add-day') {
+    title.textContent = '新增行程日';
+    body.innerHTML = `
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">日期 *</label><input class="form-input" id="f-date" placeholder="7/7（一）"></div>
+        <div class="form-group"><label class="form-label">圖示 Emoji</label><input class="form-input" id="f-icon" value="📍"></div>
+      </div>
+      <div class="form-group"><label class="form-label">行程標題</label><input class="form-input" id="f-label" placeholder="行程簡述"></div>
+      <div class="form-group"><label class="form-label">類型</label><select class="form-input" id="f-type"><option value="free">自由行</option><option value="tour">跟團</option></select></div>`;
+  } else if(mode==='add-hotel') {
+    title.textContent = '新增住宿';
+    body.innerHTML = `
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">城市</label><input class="form-input" id="f-city" placeholder="上海"></div>
+        <div class="form-group"><label class="form-label">住宿日期</label><input class="form-input" id="f-nights" placeholder="6/28 - 6/30"></div>
+      </div>
+      <div class="form-group"><label class="form-label">飯店名稱</label><input class="form-input" id="f-name" placeholder="飯店名稱"></div>
+      <div class="form-group"><label class="form-label">價格</label><input class="form-input" id="f-price" placeholder="約 NT$1,500/晚"></div>
+      <div class="form-group"><label class="form-label">訂房連結</label><input class="form-input" id="f-bookUrl" placeholder="https://..."></div>
+      <div class="form-group"><label class="form-label">備注提示</label><input class="form-input" id="f-tip" placeholder="位置、特色..."></div>`;
+  }
+}
+
+function closeModal(e) {
+  if(e && e.target !== document.getElementById('modal-overlay')) return;
+  document.getElementById('modal-overlay').classList.remove('show');
+  modalMode = ''; modalTarget = null;
+}
+
+function saveModal() {
+  const g = id => (document.getElementById(id)||{}).value || '';
+  if(modalMode==='edit-activity') {
+    const a = getActivity(modalTarget);
+    if(!a) return;
+    a.time = g('f-time'); a.icon = g('f-icon'); a.title = g('f-title');
+    a.address = g('f-address'); a.cost = parseInt(g('f-cost'))||0;
+    a.highlight = g('f-highlight')==='true';
+    a.tips = g('f-tips').split('\n').filter(Boolean);
+    a.shoot = g('f-shoot').split('\n').filter(Boolean);
+    save(); renderSidebar(); renderDetail(modalTarget);
+  } else if(modalMode==='add-activity') {
+    const title = g('f-title'); if(!title) return;
+    const d = state.days.find(x=>x.id===modalTarget);
+    if(!d) return;
+    d.activities.push({ id:'a'+Date.now(), time:g('f-time'), icon:g('f-icon')||'📍', title,
+      address:g('f-address'), cost:parseInt(g('f-cost'))||0, done:false, highlight:false,
+      mapUrl:'', amapUrl:'', xhsUrl:'', tips:g('f-tips').split('\n').filter(Boolean), shoot:[] });
+    save(); renderSidebar();
+  } else if(modalMode==='add-day') {
+    const date = g('f-date'); if(!date) return;
+    state.days.push({ id:'d'+Date.now(), date, label:g('f-label')||date, type:g('f-type'),
+      icon:g('f-icon')||'📍', open:false, activities:[] });
+    save(); renderSidebar();
+  } else if(modalMode==='add-hotel') {
+    state.hotels.push({ id:'h'+Date.now(), city:g('f-city'), nights:g('f-nights'),
+      name:g('f-name'), emoji:'🏨', price:g('f-price'), confirmed:false,
+      bookUrl:g('f-bookUrl'), tip:g('f-tip') });
+    save(); renderHotels();
+  }
+  closeModal();
+}
+
+// ══════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════
+function exportData() {
+  const blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = '上海浙江旅遊計劃_'+new Date().toLocaleDateString('zh-TW')+'.json';
+  a.click();
+}
+
+function resetProgress() {
+  if(!confirm('確定要重設所有打勾進度？（行程資料和備注保留）')) return;
+  state.days.forEach(d=>d.activities.forEach(a=>a.done=false));
+  state.checklist.forEach(cat=>cat.items.forEach(i=>i.done=false));
+  state.hotels.forEach(h=>{ if(!h.bookUrl==='') h.confirmed=false; });
+  save(); renderSidebar(); renderChecklist();
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+state.days[0].open = true;
+renderSidebar();
+updateProgress();
+</script>
+</body>
+</html>
