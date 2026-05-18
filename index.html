@@ -203,14 +203,63 @@ body{font-family:'PingFang TC','Microsoft JhengHei',sans-serif;background:var(--
 .form-input{width:100%;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;font-family:inherit;outline:none}
 .form-input:focus{border-color:var(--orange)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* ── MOBILE RESPONSIVE ── */
+#hamburger{display:none;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:4px 8px;line-height:1}
+#sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200}
+#sidebar-overlay.show{display:block}
+
+@media(max-width:768px){
+  body{overflow:auto}
+  #header h1{font-size:13px}
+  #header .meta{display:none}
+  #hamburger{display:block}
+  .header-actions .hbtn:not(.accent){display:none}
+
+  #main{flex-direction:column;overflow:visible}
+
+  #sidebar{
+    position:fixed;top:0;left:-290px;width:280px;height:100vh;
+    z-index:300;transition:left .25s ease;box-shadow:4px 0 20px rgba(0,0,0,.3)
+  }
+  #sidebar.open{left:0}
+
+  #content{width:100%;min-height:calc(100vh - 44px)}
+
+  #tabs{
+    position:sticky;top:0;z-index:100;overflow-x:auto;padding:0 8px;
+    scrollbar-width:none;-webkit-overflow-scrolling:touch
+  }
+  #tabs::-webkit-scrollbar{display:none}
+  .tab{padding:10px 12px;font-size:11px}
+
+  .tab-pane{padding:12px}
+
+  .hotels-grid{grid-template-columns:1fr}
+
+  .budget-summary{grid-template-columns:1fr 1fr}
+
+  #modal{width:95vw;max-height:85vh}
+
+  .link-row{flex-wrap:wrap;gap:6px}
+  .link-btn{font-size:10px;padding:6px 10px}
+
+  .detail-header{flex-direction:column;gap:8px}
+  .detail-actions{align-self:flex-end}
+
+  .section-header{flex-direction:column;align-items:flex-start;gap:8px}
+}
 </style>
 </head>
 <body>
 
 <div id="header">
-  <div>
-    <h1>🗺️ 上海浙江旅遊計劃板 2026</h1>
-    <div class="meta">6/28（六）— 7/6（日）· 9天8夜 · 高雄出發</div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button id="hamburger" onclick="toggleSidebar()">☰</button>
+    <div>
+      <h1>🗺️ 上海浙江旅遊計劃板 2026</h1>
+      <div class="meta">6/28（六）— 7/6（日）· 9天8夜 · 高雄出發</div>
+    </div>
   </div>
   <div class="header-actions">
     <button class="hbtn" onclick="exportData()">⬇ 匯出資料</button>
@@ -218,6 +267,7 @@ body{font-family:'PingFang TC','Microsoft JhengHei',sans-serif;background:var(--
     <button class="hbtn accent" onclick="showModal('add-day')">+ 新增行程日</button>
   </div>
 </div>
+<div id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
 <div id="main">
   <!-- LEFT SIDEBAR -->
@@ -340,27 +390,43 @@ const DEFAULT_DATA = {
           xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=浦东机场攻略台湾人',
           tips:['地鐵 2 號線進市區：浦東機場→人民廣場，約 47 分鐘，票價 9 元','磁浮到龍陽路再轉地鐵，較快但票價 55 元','市區計程車約 150-200 元','過海關後先換 SIM 卡 or 確認漫遊可用'],
           shoot:['拍第一腳踩上上海的地板','拍地鐵票價截圖（說明便宜的原因）'], highlight:false },
-        { id:'a103', time:'21:30', icon:'🌃', title:'外灘夜遊', type:'attraction',
-          address:'上海市黃浦區中山東一路（地鐵南京東路站 2 號出口）',
+        { id:'a103', time:'21:00', icon:'🌃', title:'陸家嘴濱江夜景', type:'attraction',
+          address:'上海市浦東新區陸家嘴濱江大道（地鐵 2 號線陸家嘴站）',
           cost:0, done:false,
-          mapUrl:'https://www.google.com/maps/search/上海外滩',
-          amapUrl:'https://uri.amap.com/search?keyword=外滩&city=上海',
-          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=上海外滩夜景拍照打卡',
-          tips:['免費 · 全天開放','最佳燈光時間：晚上 20:30 後全亮','南京東路站 2 號出口步行約 10 分鐘','從陸家嘴看外灘也是經典視角'],
-          shoot:['背對江面雙臂展開的 T 字 pose','東方明珠 + 江景的橫移慢搖鏡頭','夜景人像：ISO 不要太高，用夜景模式'], highlight:true },
+          mapUrl:'https://www.google.com/maps/search/陸家嘴濱江大道',
+          amapUrl:'https://uri.amap.com/search?keyword=陆家嘴滨江&city=上海',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=陆家嘴夜景打卡',
+          tips:['免費 · 全天開放','住在浦東走路即到，無需跨江','從浦東看外灘方向：東方明珠在背後，正面看整排外灘百年建築','比傳統外灘角度更壯觀的全景，22:00 燈光熄滅需提前到'],
+          shoot:['正面拍外灘萬國建築群（最完整全景角度）','以東方明珠為前景、外灘為背景','江面船隻光軌慢快門（手機夜景長曝模式）','口播：「從浦東這側看外灘，才是真正的全景！」'], highlight:true },
       ]
     },
     { id:'d2', date:'6/29（日）', label:'🔥 科技三連日', type:'free', icon:'🤖',
       activities:[
-        { id:'a201', time:'09:30', icon:'🚁', title:'美團無人機外送體驗', type:'tech',
+        { id:'a200', time:'09:00', icon:'🔬', title:'上海科技館', type:'attraction',
+          address:'上海市浦東新區世紀大道 2000 號（地鐵 2 號線科技館站）',
+          cost:60, done:false,
+          mapUrl:'https://www.google.com/maps/search/上海科技馆',
+          amapUrl:'https://uri.amap.com/search?keyword=上海科技馆&city=上海',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=上海科技馆打卡攻略',
+          tips:['門票：成人 60 元，中國最大科技類博物館','開放時間：09:00–17:15，周一閉館','地鐵 2 號線「科技館站」出口直達，旁邊就是世紀公園','推薦館區：機器人館、生命館、宇宙館（各約 30 分鐘）','早點進場，10 點後人會變多'],
+          shoot:['機器人館互動展示（科技感十足）','站在大型恐龍化石前廣角仰拍','口播：「這是上海科技館，門票比台灣科博館還便宜」'], highlight:true },
+        { id:'a200b', time:'（可選）', icon:'🐠', title:'上海海洋水族館（可選替換）', type:'attraction',
+          address:'上海市浦東新區陸家嘴環路 1388 號（地鐵 2 號線陸家嘴站）',
+          cost:190, done:false,
+          mapUrl:'https://www.google.com/maps/search/上海海洋水族馆',
+          amapUrl:'https://uri.amap.com/search?keyword=上海海洋水族馆&city=上海',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=上海海洋水族馆攻略',
+          tips:['亞洲最長海底隧道（155 公尺），鯊魚從頭頂游過','門票較貴（成人 190 元），建議提前網購 9 折','開放 09:00–18:00','距科技館約 3 站地鐵，與科技館二選一即可，勿兩個都排'],
+          shoot:['海底隧道鯊魚游過頭頂特寫','魚群逆光剪影','口播：「這個隧道超過 150 公尺，全都是魚！」'], highlight:false },
+        { id:'a201', time:'11:30', icon:'🚁', title:'美團無人機外送體驗', type:'tech',
           address:'上海市楊浦區翔殷路 1099 號（合生匯購物廣場）',
           cost:30, done:false,
           mapUrl:'https://www.google.com/maps/search/上海合生汇购物广场',
           amapUrl:'https://uri.amap.com/search?keyword=合生汇&city=上海',
           xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=美团无人机外卖体验',
-          tips:['地鐵 10 號線「江灣體育場站」步行 10 分鐘','運營時間：10:00–16:45（⚠️ 必須在截止前點餐）','空投櫃位置：黃興公園（楊浦區鞍山路 591 號）','配送費約 7 元人民幣','點餐方式：美團 App → 地址設合生匯 → 選餐廳 → 選「無人機配送」→ 收貨地點選「空投櫃」'],
+          tips:['科技館→合生匯：地鐵 2 號線轉 10 號線，約 30 分鐘','運營時間：10:00–16:45（⚠️ 必須在 16:00 前點餐）','空投櫃位置：黃興公園（楊浦區鞍山路 591 號）','配送費約 7 元人民幣','點餐方式：美團 App → 地址設合生匯 → 選餐廳 → 選「無人機配送」→ 收貨地點選「空投櫃」'],
           shoot:['App 選「無人機配送」選項的畫面截圖','空投艙打開、餐盒出現的瞬間（最強鏡頭）','拿餐後表情反應口播：「這外賣是無人機從天上送的」'], highlight:true },
-        { id:'a202', time:'12:00', icon:'🚗', title:'小馬智行無人駕駛', type:'tech',
+        { id:'a202', time:'13:30', icon:'🚗', title:'小馬智行無人駕駛', type:'tech',
           address:'浦東新區世紀公園附近（金橋/花木片區）',
           cost:25, done:false,
           mapUrl:'https://www.google.com/maps/search/世纪公园+上海',
@@ -368,7 +434,7 @@ const DEFAULT_DATA = {
           xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=小马智行无人驾驶体验',
           tips:['下載「小馬智行」App（出發前完成登入）','地鐵 2 號線「世紀公園站」下車','App 叫車 → 掃車身 QR Code 開門 → 繫安全帶才啟動','費用約 15–25 元，運營時間 07:30–21:30（每日）','最多坐 3 人，前排不能坐'],
           shoot:['等車時 App 顯示「車輛接近中」畫面','掃 QR Code 開車門那一刻','方向盤自己轉的特寫（帳號最強鏡頭）','副駕視角：空著的駕駛座 + 前方道路','下車後口播：「這輛車沒有司機，全程 AI 開的」'], highlight:true },
-        { id:'a203', time:'14:30', icon:'💧', title:'水滴湖（滴水湖）', type:'attraction',
+        { id:'a203', time:'16:00', icon:'💧', title:'水滴湖（滴水湖）', type:'attraction',
           address:'上海市浦東新區臨港大道（地鐵 16 號線「滴水湖站」）',
           cost:18, done:false,
           mapUrl:'https://www.google.com/maps/search/滴水湖+上海临港',
@@ -403,14 +469,14 @@ const DEFAULT_DATA = {
           xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=川沙古镇打卡',
           tips:['免費參觀','近迪士尼，交通便利','白牆黑瓦的江南水鄉風格'],
           shoot:['古橋 + 小河道的構圖','人少的小巷子'], highlight:false },
-        { id:'a304', time:'晚上', icon:'🌃', title:'夜遊外灘（跟團）', type:'attraction',
-          address:'上海市黃浦區中山東一路',
+        { id:'a304', time:'晚上', icon:'🌃', title:'外灘夜景正式拍攝', type:'attraction',
+          address:'上海市黃浦區中山東一路（地鐵南京東路站 2 號出口）',
           cost:0,done:false,
           mapUrl:'https://www.google.com/maps/search/上海外滩',
           amapUrl:'https://uri.amap.com/search?keyword=外滩&city=上海',
-          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=上海外滩夜景',
-          tips:['這天是跟團行程，外灘夜景正式拍攝','把 6/28 到的那晚當作暖身，今天認真拍'],
-          shoot:['外灘封面等級素材：橫移全景','江對岸陸家嘴燈光倒影'], highlight:true },
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=上海外滩夜景拍照打卡',
+          tips:['今天是外灘「黃浦側」正式拍攝（看對岸陸家嘴）','建議傍晚 17:00 提前到位，連拍夕陽→黃昏→全亮夜景三段','小眾機位：乍浦路橋（外白渡橋＋東方明珠同框）','22:00 燈光準時關閉，21:30 前要拍完'],
+          shoot:['橫移全景：外灘百年建築群','乍浦路橋特殊視角','夜景倒影（江面反光）','穿淺色衣服，湖面反光拍起來更乾淨'], highlight:true },
       ]
     },
     { id:'d4', date:'7/1（二）', label:'跟團 Day2 · 杭州', type:'tour', icon:'🏞️',
@@ -552,18 +618,18 @@ const DEFAULT_DATA = {
   ],
 
   hotels: [
-    { id:'h1', city:'上海', nights:'6/28 - 6/30（自費）', name:'全季酒店（外灘/南京路區）',
-      emoji:'🏨', price:'約 NT$1,500-2,200/晚', confirmed:false,
-      bookUrl:'https://www.agoda.com/zh-tw/search?city=12115&checkIn=2026-06-28&checkOut=2026-06-30&keyword=全季+南京路',
-      tip:'推薦住外灘、南京路附近，走路到外灘 10 分鐘' },
-    { id:'h2', city:'上海', nights:'6/28 - 6/30（自費）', name:'漢庭優選（人民廣場）',
+    { id:'h1', city:'上海・浦東', nights:'6/28 - 6/30（自費）', name:'全季酒店（世紀公園/浦東）',
+      emoji:'🏨', price:'約 NT$1,200-1,800/晚', confirmed:false,
+      bookUrl:'https://www.agoda.com/zh-tw/search?city=12115&checkIn=2026-06-28&checkOut=2026-06-30&keyword=全季+世纪公园',
+      tip:'🔑 推薦！地鐵 2 號線世紀公園站附近，6/29 科技館、小馬智行走路或 1 站即到，陸家嘴夜景也近' },
+    { id:'h2', city:'上海・浦東', nights:'6/28 - 6/30（自費）', name:'漢庭酒店（陸家嘴/浦東）',
       emoji:'🏩', price:'約 NT$900-1,400/晚', confirmed:false,
-      bookUrl:'https://www.agoda.com/zh-tw/search?city=12115&checkIn=2026-06-28&checkOut=2026-06-30&keyword=汉庭+人民广场',
-      tip:'性價比高，人民廣場正中心，地鐵超方便' },
-    { id:'h3', city:'上海', nights:'6/28 - 6/30（自費）', name:'錦江之星（新天地/外灘）',
-      emoji:'🏪', price:'約 NT$700-1,000/晚', confirmed:false,
-      bookUrl:'https://www.agoda.com/zh-tw/search?city=12115&checkIn=2026-06-28&checkOut=2026-06-30&keyword=锦江之星+新天地',
-      tip:'超值選擇，新天地文藝區，附近餐廳很多' },
+      bookUrl:'https://www.agoda.com/zh-tw/search?city=12115&checkIn=2026-06-28&checkOut=2026-06-30&keyword=汉庭+陆家嘴',
+      tip:'陸家嘴商圈中心，走路到濱江夜景 10 分鐘，海洋水族館 5 分鐘，性價比高' },
+    { id:'h3', city:'上海・浦東', nights:'6/28 - 6/30（自費）', name:'如家精選（浦東張楊路）',
+      emoji:'🏪', price:'約 NT$650-950/晚', confirmed:false,
+      bookUrl:'https://www.agoda.com/zh-tw/search?city=12115&checkIn=2026-06-28&checkOut=2026-06-30&keyword=如家+浦东+张杨路',
+      tip:'最超值選擇，張楊路商圈，地鐵方便，距陸家嘴 2 站' },
     { id:'h4', city:'杭州', nights:'7/1（跟團安排）', name:'跟團住宿（已安排）',
       emoji:'✅', price:'跟團包含', confirmed:true, bookUrl:'', tip:'跟團統一安排' },
     { id:'h5', city:'蘭溪', nights:'7/2（跟團安排）', name:'跟團住宿（已安排）',
@@ -1119,6 +1185,27 @@ function resetProgress() {
   state.hotels.forEach(h=>{ if(!h.bookUrl==='') h.confirmed=false; });
   save(); renderSidebar(); renderChecklist();
 }
+
+// ══════════════════════════════════════════
+// MOBILE SIDEBAR
+// ══════════════════════════════════════════
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('sidebar-overlay');
+  sb.classList.toggle('open');
+  ov.classList.toggle('show');
+}
+
+// Close sidebar when activity is selected on mobile
+const origSelectActivity = window.selectActivity;
+document.addEventListener('click', function(e) {
+  if(e.target.closest('.activity-item') && window.innerWidth <= 768) {
+    const sb = document.getElementById('sidebar');
+    const ov = document.getElementById('sidebar-overlay');
+    sb.classList.remove('open');
+    ov.classList.remove('show');
+  }
+});
 
 // ══════════════════════════════════════════
 // INIT
