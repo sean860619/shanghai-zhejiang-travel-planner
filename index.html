@@ -309,7 +309,7 @@ body{font-family:'PingFang TC','Microsoft JhengHei',sans-serif;background:var(--
       <div class="section-header">
         <div>
           <div class="section-h">🏨 住宿清單</div>
-          <div class="section-sub">點擊「已確認」更新入住狀態 · 6/28-6/29 需自行訂房</div>
+          <div class="section-sub">6/28-6/29 建議住浦東金橋（LALAPORT 旁 · 小馬智行核心區）· Trip.com 訂房</div>
         </div>
         <button class="hbtn accent" onclick="showModal('add-hotel')" style="font-size:11px">+ 新增住宿</button>
       </div>
@@ -390,14 +390,22 @@ const DEFAULT_DATA = {
           xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=浦东机场攻略台湾人',
           tips:['地鐵 2 號線進市區：浦東機場→人民廣場，約 47 分鐘，票價 9 元','磁浮到龍陽路再轉地鐵，較快但票價 55 元','市區計程車約 150-200 元','過海關後先換 SIM 卡 or 確認漫遊可用'],
           shoot:['拍第一腳踩上上海的地板','拍地鐵票價截圖（說明便宜的原因）'], highlight:false },
-        { id:'a103', time:'21:00', icon:'🌃', title:'陸家嘴濱江夜景', type:'attraction',
-          address:'上海市浦東新區陸家嘴濱江大道（地鐵 2 號線陸家嘴站）',
+        { id:'a103', time:'20:30', icon:'🛍️', title:'LALAPORT 金橋逛街', type:'attraction',
+          address:'上海市浦東新區金橋路 1988 號（地鐵 6 號線東靖路站步行 8 分鐘）',
           cost:0, done:false,
-          mapUrl:'https://www.google.com/maps/search/陸家嘴濱江大道',
-          amapUrl:'https://uri.amap.com/search?keyword=陆家嘴滨江&city=上海',
-          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=陆家嘴夜景打卡',
-          tips:['免費 · 全天開放','住在浦東走路即到，無需跨江','從浦東看外灘方向：東方明珠在背後，正面看整排外灘百年建築','比傳統外灘角度更壯觀的全景，22:00 燈光熄滅需提前到'],
-          shoot:['正面拍外灘萬國建築群（最完整全景角度）','以東方明珠為前景、外灘為背景','江面船隻光軌慢快門（手機夜景長曝模式）','口播：「從浦東這側看外灘，才是真正的全景！」'], highlight:true },
+          mapUrl:'https://www.google.com/maps/search/LaLaport+上海金桥',
+          amapUrl:'https://uri.amap.com/search?keyword=三井LaLaport上海金桥&city=上海',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=LaLaport上海金桥打卡',
+          tips:['三井 LaLaport 上海金橋，日系購物中心，免費逛','剛下飛機不遠，搭地鐵 2 號線→6 號線約 40 分鐘到','B1 美食區超多選擇，適合解決抵滬第一餐','⭐ 就在飯店附近，逛完走路回去','22:00 打烊，19:05 落地到這裡正好！'],
+          shoot:['日系購物中心逛街 vlog 感','LALAPORT 招牌 + 夜晚打燈','第一頓上海美食開箱'], highlight:false },
+        { id:'a104', time:'22:00', icon:'🌃', title:'金橋周邊夜遊散步', type:'attraction',
+          address:'浦東新區金橋路商圈（LALAPORT 周邊）',
+          cost:0, done:false,
+          mapUrl:'https://www.google.com/maps/search/浦東金橋商圈',
+          amapUrl:'https://uri.amap.com/search?keyword=金橋商圈&city=上海',
+          xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=浦东金桥夜景',
+          tips:['LALAPORT 附近有不少夜間咖啡廳和小吃','輕鬆散步補眠前的消化時間','⭐ 明天 6/29 就在這附近叫小馬智行！'],
+          shoot:['第一天到上海口播：「今晚住在浦東金橋，明天就在這裡體驗未來科技」'], highlight:false },
       ]
     },
     { id:'d2', date:'6/29（日）', label:'🔥 科技三連日', type:'free', icon:'🤖',
@@ -432,7 +440,7 @@ const DEFAULT_DATA = {
           mapUrl:'https://www.google.com/maps/search/世纪公园+上海',
           amapUrl:'https://uri.amap.com/search?keyword=世纪公园&city=上海',
           xhsUrl:'https://www.xiaohongshu.com/search_result?keyword=小马智行无人驾驶体验',
-          tips:['下載「小馬智行」App（出發前完成登入）','地鐵 2 號線「世紀公園站」下車','App 叫車 → 掃車身 QR Code 開門 → 繫安全帶才啟動','費用約 15–25 元，運營時間 07:30–21:30（每日）','最多坐 3 人，前排不能坐'],
+          tips:['⭐ 住 LALAPORT 金橋區的飯店：直接在門口打開 App 叫車，金橋是核心服務區','下載「小馬智行」App（出發前完成登入）或用「錦江智行」微信小程序','App 叫車 → 掃車身 QR Code 開門 → 繫安全帶才啟動','費用約 15–25 元，運營時間 07:30–21:30（每日）','最多坐 3 人，前排不能坐'],
           shoot:['等車時 App 顯示「車輛接近中」畫面','掃 QR Code 開車門那一刻','方向盤自己轉的特寫（帳號最強鏡頭）','副駕視角：空著的駕駛座 + 前方道路','下車後口播：「這輛車沒有司機，全程 AI 開的」'], highlight:true },
         { id:'a203', time:'16:00', icon:'💧', title:'水滴湖（滴水湖）', type:'attraction',
           address:'上海市浦東新區臨港大道（地鐵 16 號線「滴水湖站」）',
@@ -618,18 +626,18 @@ const DEFAULT_DATA = {
   ],
 
   hotels: [
-    { id:'h1', city:'上海・浦東', nights:'6/28 - 6/30（自費）', name:'全季酒店（世紀公園/浦東）',
-      emoji:'🏨', price:'約 NT$1,200-1,800/晚', confirmed:false,
-      bookUrl:'https://www.agoda.com/zh-tw/search?city=12115&checkIn=2026-06-28&checkOut=2026-06-30&keyword=全季+世纪公园',
-      tip:'🔑 推薦！地鐵 2 號線世紀公園站附近，6/29 科技館、小馬智行走路或 1 站即到，陸家嘴夜景也近' },
-    { id:'h2', city:'上海・浦東', nights:'6/28 - 6/30（自費）', name:'漢庭酒店（陸家嘴/浦東）',
-      emoji:'🏩', price:'約 NT$900-1,400/晚', confirmed:false,
-      bookUrl:'https://www.agoda.com/zh-tw/search?city=12115&checkIn=2026-06-28&checkOut=2026-06-30&keyword=汉庭+陆家嘴',
-      tip:'陸家嘴商圈中心，走路到濱江夜景 10 分鐘，海洋水族館 5 分鐘，性價比高' },
-    { id:'h3', city:'上海・浦東', nights:'6/28 - 6/30（自費）', name:'如家精選（浦東張楊路）',
-      emoji:'🏪', price:'約 NT$650-950/晚', confirmed:false,
-      bookUrl:'https://www.agoda.com/zh-tw/search?city=12115&checkIn=2026-06-28&checkOut=2026-06-30&keyword=如家+浦东+张杨路',
-      tip:'最超值選擇，張楊路商圈，地鐵方便，距陸家嘴 2 站' },
+    { id:'h1', city:'上海・浦東金橋', nights:'6/28 - 6/30（自費）', name:'🔑 全季酒店（浦東金橋 LALAPORT 旁）',
+      emoji:'🏨', price:'約 NT$1,100-1,600/晚', confirmed:false,
+      bookUrl:'https://zh.trip.com/hotels/list/?city=2&checkin=2026-06-28&checkout=2026-06-30&keyword=全季+金桥',
+      tip:'⭐ 強烈推薦｜華住會品牌｜步行 8 分鐘到 LALAPORT 金橋｜小馬智行金橋核心服務區可門口叫車｜自助洗衣機✓｜可洽詢機場接送' },
+    { id:'h2', city:'上海・浦東金橋', nights:'6/28 - 6/30（自費）', name:'城際精品酒店（浦東金橋）',
+      emoji:'🏩', price:'約 NT$950-1,400/晚', confirmed:false,
+      bookUrl:'https://zh.trip.com/hotels/list/?city=2&checkin=2026-06-28&checkout=2026-06-30&keyword=城际+浦东金桥',
+      tip:'城際品牌精品酒店｜設計感佳｜同樣在金橋商圈，LALAPORT 步行可達｜自助洗衣✓｜前台可安排機場接送（提前聯繫）' },
+    { id:'h3', city:'上海・臨港（滴水湖）', nights:'6/28 - 6/30（可選）', name:'全季酒店（臨港滴水湖）',
+      emoji:'🌊', price:'約 NT$800-1,200/晚', confirmed:false,
+      bookUrl:'https://zh.trip.com/hotels/list/?city=2&checkin=2026-06-28&checkout=2026-06-30&keyword=全季+临港+滴水湖',
+      tip:'另一選擇｜6/29 滴水湖就在門口｜浦東機場接送方便（僅 20km）｜自助洗衣✓｜但距 LALAPORT、楊浦較遠，適合喜歡安靜的人' },
     { id:'h4', city:'杭州', nights:'7/1（跟團安排）', name:'跟團住宿（已安排）',
       emoji:'✅', price:'跟團包含', confirmed:true, bookUrl:'', tip:'跟團統一安排' },
     { id:'h5', city:'蘭溪', nights:'7/2（跟團安排）', name:'跟團住宿（已安排）',
