@@ -252,57 +252,97 @@
 
   <!-- CI583 流程指示卡（預設隱藏，點 alert 展開）-->
   <div class="card" id="ci583-guide" style="display:none; margin-bottom:10px; border-left: 4px solid #e13c3c;">
-    <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:#e13c3c;">📍 CI583 落地 T1 → T2 麥當勞 流程</div>
+    <div style="font-size:14px;font-weight:700;margin-bottom:4px;color:#e13c3c;">📍 CI583 落地 PVG T1 → T2 麥當勞 完整流程</div>
+    <div style="font-size:11px;color:#aaa;margin-bottom:14px;">每完成一步點一下打勾 ✓</div>
     <div id="steps-container">
 
       <div class="step-item" id="step-1" onclick="doneStep(1)">
-        <div class="step-num">①</div>
+        <div class="step-num">✈️</div>
         <div class="step-body">
-          <div class="step-title">下飛機後準備好台胞證</div>
-          <div class="step-desc">過入境審查時拿<strong>台胞證</strong>，不要拿護照，走「本國人」通道，速度快很多。</div>
+          <div class="step-title">第一步：下飛機</div>
+          <div class="step-desc">
+            跟著人群走，沿走廊一直往前<br>
+            看到「<strong>入境 / Arrivals</strong>」指示牌就跟著走
+          </div>
         </div>
         <div class="step-check">○</div>
       </div>
 
       <div class="step-item" id="step-2" onclick="doneStep(2)">
-        <div class="step-num">②</div>
+        <div class="step-num">🛂</div>
         <div class="step-body">
-          <div class="step-title">提行李、過海關</div>
-          <div class="step-desc">入境審查完後去行李轉盤提行李，再過海關出到 T1 到達大廳。</div>
+          <div class="step-title">第二步：入境審查</div>
+          <div class="step-desc">
+            找寫「<strong>中国居民 / 本国人</strong>」的隊伍排隊<br>
+            拿<strong>台胞證</strong>遞給海關，不要拿護照<br>
+            海關問什麼就照實回答，點頭說好就行<br>
+            <span style="color:#e65100;">⚠️ 不要排「外国人 / Foreigners」那條</span>
+          </div>
         </div>
         <div class="step-check">○</div>
       </div>
 
       <div class="step-item" id="step-3" onclick="doneStep(3)">
-        <div class="step-num">③</div>
+        <div class="step-num">🧳</div>
         <div class="step-body">
-          <div class="step-title">不要出機場，找「交通中心」指示牌</div>
-          <div class="step-desc">出了海關往裡走，沿「交通中心」方向前進。</div>
+          <div class="step-title">第三步：提行李</div>
+          <div class="step-desc">
+            出了入境審查後，抬頭看正前方的大電子螢幕<br>
+            找「<strong>CI583</strong>」那行，看旁邊寫的是幾號轉盤<br>
+            也可以落地後點這裡直接查：<a href="https://www.trip.com/webapp/flight/schedule/detail.html?isHideNavBar=YES&origin=210&useCTHybrid=1&flightNo=CI583&dcode=KHH&acode=PVG&queryDate=2026-06-28&queryTime=16:50:00&locale=zh-TW" target="_blank" style="color:#1a6fb5;font-weight:700;">👉 CI583 航班動態</a><br>
+            走到對應轉盤旁邊等行李出來<br>
+            不確定是不是自己的就看行李牌
+          </div>
         </div>
         <div class="step-check">○</div>
       </div>
 
       <div class="step-item" id="step-4" onclick="doneStep(4)">
-        <div class="step-num">④</div>
+        <div class="step-num">🟢</div>
         <div class="step-body">
-          <div class="step-title">搭免費擺渡車到 T2</div>
-          <div class="step-desc">找寫著「<strong>T2 / 第二航站樓</strong>」的免費接駁巴士，約 10～15 分鐘。<br><span style="color:#e65100;font-size:12px;">⚠️ 上車點在 4 號門（2026年4月更新）</span></div>
+          <div class="step-title">第四步：過海關</div>
+          <div class="step-desc">
+            拿完行李往前走<br>
+            走<strong>綠色通道</strong>（沒有要申報的東西都走這條）<br>
+            直接走過去不用停，有人攔才停<br>
+            <span style="color:#e65100;">⚠️ 不要走紅色通道</span>
+          </div>
         </div>
         <div class="step-check">○</div>
       </div>
 
       <div class="step-item" id="step-5" onclick="doneStep(5)">
-        <div class="step-num">⑤</div>
+        <div class="step-num">🚌</div>
         <div class="step-body">
-          <div class="step-title">抵達 T2，去 2 樓麥當勞等</div>
-          <div class="step-desc">下車進 T2 後上 2 樓，找到<strong>麥當勞（大洋洲街餐廳）</strong>等我們，我們也是搭同一班擺渡車過來。</div>
+          <div class="step-title">第五步：出關後找擺渡車</div>
+          <div class="step-desc">
+            出了海關<strong>不要走出機場大門</strong><br>
+            在大廳裡找「<strong>交通中心</strong>」指示牌，跟著走<br>
+            找寫「<strong>T2 / 第二航站楼</strong>」的免費接駁巴士，直接上車，不用買票<br>
+            <span style="color:#e65100;">⚠️ 上車點在 4 號門，不是 1 號門</span><br>
+            找不到就問任何工作人員：「<strong>去T2怎么走？</strong>」
+          </div>
+        </div>
+        <div class="step-check">○</div>
+      </div>
+
+      <div class="step-item" id="step-6" onclick="doneStep(6)">
+        <div class="step-num">🍟</div>
+        <div class="step-body">
+          <div class="step-title">第六步：抵達 T2 找麥當勞</div>
+          <div class="step-desc">
+            下車後進入 T2<br>
+            上 <strong>2 樓</strong><br>
+            找到<strong>麥當勞（大洋洲街餐廳）</strong><br>
+            坐下來等，我們馬上到 🙌
+          </div>
         </div>
         <div class="step-check">○</div>
       </div>
 
     </div>
     <div style="margin-top:12px;padding:10px 12px;background:#fff8e1;border-radius:8px;font-size:13px;color:#555;">
-      💡 出關後記得傳訊息同步進度，我們一起過去找你
+      💡 出關後記得傳訊息給 Sean，我們一起過去找你
     </div>
   </div>
 </div>
