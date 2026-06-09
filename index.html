@@ -124,6 +124,18 @@
   .spot-link { display: inline-block; background: #fff0f0; color: #e13c3c; font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 10px; text-decoration: none; margin-left: 6px; vertical-align: middle; white-space: nowrap; }
   .spot-link:hover { background: #e13c3c; color: white; }
 
+  /* ===== CI583 步驟卡 ===== */
+  .step-item { display: flex; align-items: flex-start; gap: 10px; padding: 11px 10px; margin-bottom: 6px; border-radius: 10px; background: #fafafa; border: 1px solid #eee; cursor: pointer; transition: background 0.2s; }
+  .step-item:hover { background: #fff5f5; }
+  .step-item.done { background: #f0faf0; border-color: #b2dfdb; opacity: 0.7; }
+  .step-item.done .step-title { text-decoration: line-through; color: #aaa; }
+  .step-item.done .step-check { color: #4caf50; font-size: 18px; }
+  .step-num { font-size: 18px; line-height: 1; flex-shrink: 0; }
+  .step-body { flex: 1; }
+  .step-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+  .step-desc { font-size: 12px; color: #666; line-height: 1.5; }
+  .step-check { font-size: 16px; color: #ccc; flex-shrink: 0; margin-top: 2px; }
+
   /* ===== 手機版優化 ===== */
   .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
@@ -213,6 +225,62 @@
       <strong>⚠️ 兩班不同航廈落地</strong><br>
       CI583 那位搭機場接駁巴士 T1→T2，約 10-15 分鐘。<br>
       <strong>會合點：PVG T2 到達層出口（麥當勞旁）</strong>
+    </div>
+  </div>
+
+  <!-- CI583 流程指示卡 -->
+  <div class="card" style="margin-bottom:10px; border-left: 4px solid #e13c3c;">
+    <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:#e13c3c;">📍 CI583 落地 T1 → T2 麥當勞 流程</div>
+    <div id="steps-container">
+
+      <div class="step-item" id="step-1" onclick="doneStep(1)">
+        <div class="step-num">①</div>
+        <div class="step-body">
+          <div class="step-title">下飛機後準備好台胞證</div>
+          <div class="step-desc">過入境審查時拿<strong>台胞證</strong>，不要拿護照，走「本國人」通道，速度快很多。</div>
+        </div>
+        <div class="step-check">○</div>
+      </div>
+
+      <div class="step-item" id="step-2" onclick="doneStep(2)">
+        <div class="step-num">②</div>
+        <div class="step-body">
+          <div class="step-title">提行李、過海關</div>
+          <div class="step-desc">入境審查完後去行李轉盤提行李，再過海關出到 T1 到達大廳。</div>
+        </div>
+        <div class="step-check">○</div>
+      </div>
+
+      <div class="step-item" id="step-3" onclick="doneStep(3)">
+        <div class="step-num">③</div>
+        <div class="step-body">
+          <div class="step-title">不要出機場，找「交通中心」指示牌</div>
+          <div class="step-desc">出了海關往裡走，沿「交通中心」方向前進。</div>
+        </div>
+        <div class="step-check">○</div>
+      </div>
+
+      <div class="step-item" id="step-4" onclick="doneStep(4)">
+        <div class="step-num">④</div>
+        <div class="step-body">
+          <div class="step-title">搭免費擺渡車到 T2</div>
+          <div class="step-desc">找寫著「<strong>T2 / 第二航站樓</strong>」的免費接駁巴士，約 10～15 分鐘。<br><span style="color:#e65100;font-size:12px;">⚠️ 上車點在 4 號門（2026年4月更新）</span></div>
+        </div>
+        <div class="step-check">○</div>
+      </div>
+
+      <div class="step-item" id="step-5" onclick="doneStep(5)">
+        <div class="step-num">⑤</div>
+        <div class="step-body">
+          <div class="step-title">抵達 T2，去 2 樓麥當勞等</div>
+          <div class="step-desc">下車進 T2 後上 2 樓，找到<strong>麥當勞（大洋洲街餐廳）</strong>等我們，我們也是搭同一班擺渡車過來。</div>
+        </div>
+        <div class="step-check">○</div>
+      </div>
+
+    </div>
+    <div style="margin-top:12px;padding:10px 12px;background:#fff8e1;border-radius:8px;font-size:13px;color:#555;">
+      💡 出關後記得傳訊息同步進度，我們一起過去找你
     </div>
   </div>
 </div>
@@ -950,6 +1018,18 @@
 
 <script>
 // 小紅書：先嘗試喚起 APP，1.5 秒後若未跳轉則開網頁
+function doneStep(n) {
+  var el = document.getElementById('step-' + n);
+  if (!el) return;
+  if (el.classList.contains('done')) {
+    el.classList.remove('done');
+    el.querySelector('.step-check').textContent = '○';
+  } else {
+    el.classList.add('done');
+    el.querySelector('.step-check').textContent = '✓';
+  }
+}
+
 function openXHS(keyword) {
   var encoded = encodeURIComponent(keyword);
   var appUrl  = 'xhsdiscover://search/result?keyword=' + encoded;
