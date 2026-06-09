@@ -949,6 +949,36 @@
 <div style="height:30px;"></div>
 
 <script>
+// 小紅書：先嘗試喚起 APP，1.5 秒後若未跳轉則開網頁
+function openXHS(keyword) {
+  var encoded = encodeURIComponent(keyword);
+  var appUrl  = 'xhsdiscover://search/result?keyword=' + encoded;
+  var webUrl  = 'https://www.xiaohongshu.com/search_result?keyword=' + encoded;
+  var start = Date.now();
+  window.location.href = appUrl;
+  setTimeout(function() {
+    // 若頁面還在（未跳到 APP），才打開網頁
+    if (Date.now() - start < 2500) {
+      window.open(webUrl, '_blank');
+    }
+  }, 1500);
+}
+
+// 自動攔截所有 spot-link 的小紅書連結
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.spot-link[href*="xiaohongshu.com"]').forEach(function(a) {
+    try {
+      var keyword = new URL(a.href).searchParams.get('keyword');
+      if (keyword) {
+        a.addEventListener('click', function(e) {
+          e.preventDefault();
+          openXHS(keyword);
+        });
+      }
+    } catch(err) {}
+  });
+});
+
 function switchTab(btn, id) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
