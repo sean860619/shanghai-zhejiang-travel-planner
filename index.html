@@ -221,15 +221,16 @@
       </div>
       <div class="flight-badge">T1 → T2</div>
     </div>
-    <div class="alert">
+    <div class="alert" onclick="toggleCI583Guide()" style="cursor:pointer; user-select:none;">
       <strong>⚠️ 兩班不同航廈落地</strong><br>
       CI583 那位搭機場接駁巴士 T1→T2，約 10-15 分鐘。<br>
       <strong>會合點：PVG T2 到達層出口（麥當勞旁）</strong>
+      <div style="margin-top:8px;font-size:12px;color:#c0392b;">👆 點這裡查看詳細流程</div>
     </div>
   </div>
 
-  <!-- CI583 流程指示卡 -->
-  <div class="card" style="margin-bottom:10px; border-left: 4px solid #e13c3c;">
+  <!-- CI583 流程指示卡（預設隱藏，點 alert 展開）-->
+  <div class="card" id="ci583-guide" style="display:none; margin-bottom:10px; border-left: 4px solid #e13c3c;">
     <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:#e13c3c;">📍 CI583 落地 T1 → T2 麥當勞 流程</div>
     <div id="steps-container">
 
@@ -1018,6 +1019,17 @@
 
 <script>
 // 小紅書：先嘗試喚起 APP，1.5 秒後若未跳轉則開網頁
+function toggleCI583Guide() {
+  var el = document.getElementById('ci583-guide');
+  if (!el) return;
+  if (el.style.display === 'none') {
+    el.style.display = 'block';
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    el.style.display = 'none';
+  }
+}
+
 function doneStep(n) {
   var el = document.getElementById('step-' + n);
   if (!el) return;
